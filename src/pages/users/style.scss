@@ -1,0 +1,12 @@
+.users-page-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    &-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+}
