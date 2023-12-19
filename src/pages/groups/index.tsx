@@ -25,7 +25,7 @@ import { getUsers } from "../../services/users/users";
 import { ClaimModel, UserModel } from "../users/types";
 import { getClaims } from "../../services/claims/claims";
 import EditGroupClaimModal from "./components/EditGroupClaimModal";
-import EditGroupUsersModal from "./EditGroupUserModal";
+import EditGroupUsersModal from "./components/EditGroupUserModal";
 
 const GroupsPage: React.FC = () => {
   const [groups, setGroups] = useState<GroupModel[]>([]);

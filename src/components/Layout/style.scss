@@ -1,0 +1,27 @@
+.header-right-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.3rem;
+
+    .avatar-container {
+        display: none;
+    }
+
+
+    .user-name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 50%;
+    }
+
+    @media (min-width: 768px) {
+        gap: 1rem;
+
+        .avatar-container {
+            display: block;
+        }
+
+    }
+}

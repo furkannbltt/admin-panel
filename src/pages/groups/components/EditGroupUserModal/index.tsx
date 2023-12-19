@@ -1,43 +1,44 @@
 import React from "react";
 import { Modal, Form, Checkbox } from "antd";
 import "./style.scss";
-import { ClaimModel, UpdateUserClaimsModel, UserModel } from "../../../users/types";
+import { GroupModel, UpdateGroupUsersModel } from "../../types";
+import { UserModel } from "../../../users/types";
 
-interface EditUserClaimModalProps {
+interface EditGroupUsersModalProps {
   visible: boolean;
-  allClaims: ClaimModel[];
-  userClaims: ClaimModel[];
+  allUsers: UserModel[];
+  groupUsers: UserModel[];
+  group: GroupModel;
   onCancel: () => void;
-  onOk: (values: UpdateUserClaimsModel) => void;
-  user: UserModel;
+  onOk: (values: UpdateGroupUsersModel) => void;
 }
 
-const EditUserClaimModal: React.FC<EditUserClaimModalProps> = ({
+const EditGroupUsersModal: React.FC<EditGroupUsersModalProps> = ({
   visible,
   onCancel,
   onOk,
-  allClaims,
-  userClaims,
-  user,
+  group,
+  allUsers,
+  groupUsers,
 }) => {
   const [form] = Form.useForm();
 
   const handleOk = () => {
     form.validateFields().then((values) => {
-      onOk({ userId: user.id, claimId: values.claims || [] });
+      onOk({ groupId: 0, userId: values.users || [] }); // groupId'i nasıl alacağınıza bağlı olarak güncelleyebilirsiniz
       form.resetFields();
     });
   };
 
   const handleSelectAll = (checked: boolean) => {
     form.setFieldsValue({
-      claims: checked ? allClaims.map((claim) => claim.id) : [],
+      users: checked ? allUsers.map((user) => user.id) : [],
     });
   };
 
   return (
     <Modal
-      title={`İzinleri Düzenle: ${user?.name}`}
+      title={`Grup Kullanıcıları Düzenle: ${group.name}`}
       visible={visible}
       onOk={handleOk}
       onCancel={() => {
@@ -51,7 +52,7 @@ const EditUserClaimModal: React.FC<EditUserClaimModalProps> = ({
     >
       <Form
         form={form}
-        initialValues={{ claims: userClaims.map((claim) => claim.id) }}
+        initialValues={{ users: groupUsers.map((user) => user.id) }}
       >
         <Form.Item
           name="selectAll"
@@ -65,7 +66,7 @@ const EditUserClaimModal: React.FC<EditUserClaimModalProps> = ({
         </Form.Item>
 
         <Form.Item
-          name="claims"
+          name="users"
           label=""
           rules={[
             {
@@ -74,9 +75,9 @@ const EditUserClaimModal: React.FC<EditUserClaimModalProps> = ({
           ]}
         >
           <Checkbox.Group
-            options={allClaims.map((claim) => ({
-              label: claim.name,
-              value: claim.id,
+            options={allUsers.map((user) => ({
+              label: user.name,
+              value: user.id,
             }))}
           />
         </Form.Item>
@@ -85,4 +86,4 @@ const EditUserClaimModal: React.FC<EditUserClaimModalProps> = ({
   );
 };
 
-export default EditUserClaimModal;
+export default EditGroupUsersModal;

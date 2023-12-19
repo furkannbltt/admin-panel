@@ -1,12 +1,5 @@
 import React, { useContext, useState } from "react";
-import {
-  Layout as AntLayout,
-  Avatar,
-  Button,
-  Space,
-  Tooltip,
-  theme,
-} from "antd";
+import { Layout as AntLayout, Avatar, Button, Tooltip, theme } from "antd";
 import Sidebar from "../SideBar";
 import Header from "../Header";
 import {
@@ -19,6 +12,7 @@ import { AuthContext } from "../../context/Auth";
 import { removeUser } from "../../utils/storageHelper";
 import { useNavigate } from "react-router-dom";
 import { getInitials } from "../../utils/helper";
+import "./style.scss";
 
 const { Sider, Content } = AntLayout;
 
@@ -59,41 +53,43 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
               onClick={() => setCollapsed(!collapsed)}
             />
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <Space size="middle">
-                {!userInfo.imageUrl ? (
-                  <Avatar style={{ background: "#1677ff" }} shape="square">
-                    {getInitials(userInfo.name)}
-                  </Avatar>
-                ) : (
-                  <Avatar
-                    style={{ background: "#1677ff" }}
-                    shape="square"
-                    src={userInfo.imageUrl}
-                    alt={userInfo.username}
-                  />
-                )}
-                <span>{userInfo?.name}</span>
-                <Tooltip title="Ayarlar">
-                  <Button
-                    type="text"
-                    onClick={() => {
-                      navigate("/settings");
-                    }}
-                    icon={<SettingOutlined />}
-                  />
-                </Tooltip>
-                <Tooltip title="Çıkış Yap">
-                  <Button
-                    type="text"
-                    onClick={() => {
-                      removeUser();
-                      navigate("/login");
-                    }}
-                    icon={<LoginOutlined />}
-                  />
-                </Tooltip>
-              </Space>
+            <div className="header-right-section">
+              {/* <Space size="middle"> */}
+              <div className="avatar-container">
+              {!userInfo.imageUrl ? (
+                <Avatar style={{ background: "#1677ff" }} shape="square">
+                  {getInitials(userInfo.name)}
+                </Avatar>
+              ) : (
+                <Avatar
+                  style={{ background: "#1677ff" }}
+                  shape="square"
+                  src={userInfo.imageUrl}
+                  alt={userInfo.username}
+                />
+              )}
+              </div>
+              <span className="user-name">{userInfo?.name}</span>
+              <Tooltip title="Ayarlar">
+                <Button
+                  type="text"
+                  onClick={() => {
+                    navigate("/settings");
+                  }}
+                  icon={<SettingOutlined />}
+                />
+              </Tooltip>
+              <Tooltip title="Çıkış Yap">
+                <Button
+                  type="text"
+                  onClick={() => {
+                    removeUser();
+                    navigate("/login");
+                  }}
+                  icon={<LoginOutlined />}
+                />
+              </Tooltip>
+              {/* </Space> */}
             </div>
           </div>
         </Header>

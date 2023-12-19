@@ -103,7 +103,7 @@ const UsersPage: React.FC = () => {
 
       {selectedModalUser && (
         <EditUserClaimModal
-          userClaims={userClaims}
+          userNotClaims={userClaims}
           allClaims={claims}
           visible={visibleEditModal}
           onCancel={() => {

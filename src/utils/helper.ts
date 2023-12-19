@@ -20,12 +20,11 @@ export const calculateTravelTime = (
   const hours = endDate.diff(startDate, "hour") % 24;
   const minutes = endDate.diff(startDate, "minute") % 60;
 
-  // Örnek format: "2 gün 3 saat 15 dakika"
   const result = `${days > 0 ? `${days} gün ` : ""}${
     hours > 0 ? `${hours} saat ` : ""
   }${minutes > 0 ? `${minutes} dakika` : ""}`;
 
-  return result.trim(); // Boşlukları temizle
+  return result.trim();
 };
 
 export function getInitials(sentence: string) {

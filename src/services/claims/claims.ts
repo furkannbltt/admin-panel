@@ -12,6 +12,12 @@ export const getClaimsNotInTheUserQuery = (userId: number) => {
   );
 };
 
+export const getClaimsInTheUserQuery = (userId: number) => {
+  return http.get<any, ClaimDBModel[]>(
+    `/operationClaims/OperationClaimsInTheUserQuery/${userId}`
+  );
+};
+
 export const getClaims = () => {
   return http.get<any, ClaimDBModel[]>(`/operationClaims/getList`);
 };
