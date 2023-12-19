@@ -2,12 +2,12 @@
 
 import React from "react";
 import { Modal, Form, Input, InputNumber } from "antd";
-import { CreateHotelPayload } from "../../types";
+import { CreateHotelModel } from "../../types";
 
 interface CreateHotelModalProps {
   visible: boolean;
   onCancel: () => void;
-  onOk: (values: CreateHotelPayload) => void;
+  onOk: (values: CreateHotelModel) => void;
 }
 
 const CreateHotelModal: React.FC<CreateHotelModalProps> = ({
@@ -68,7 +68,7 @@ const CreateHotelModal: React.FC<CreateHotelModalProps> = ({
               required: true,
               type: "number",
               message: "Lütfen geçerli bir fiyat girin!",
-            },
+            }
           ]}
         >
           <InputNumber style={{ width: "100%" }} />

@@ -1,63 +1,134 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { Button } from "antd";
 import CityListTable from "./components/CityListTable";
 import CityEditModal from "./components/EditModal";
 import CreateHotelModal from "./components/CreateHotelModal";
 import ContentHeader from "../../components/ContentHeader";
-import { City } from "./types";
 import CityCreateModal from "./components/CreateModal";
 import { useNavigate } from "react-router-dom";
 import { PlusOutlined } from "@ant-design/icons";
+import { CityModel, CreateCityModel, CreateHotelModel } from "./types";
+import {
+  createCity,
+  deleteCity,
+  editCity,
+} from "../../services/city/city";
+import { getCities } from "./../../services/city/city";
+import { createCityHotel } from "../../services/hotel/hotel";
 
 const CityPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const [cities, setCities] = useState<City[]>([
-    { id: 1, name: "İstanbul" },
-    { id: 2, name: "Ankara" },
-  ]);
-
+  const [cities, setCities] = useState<CityModel[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [visibleEditModal, setVisibleEditModal] = useState(false);
   const [visibleCreateModal, setVisibleCreateModal] = useState(false);
   const [visibleCreateHotelModal, setVisibleCreateHotelModal] = useState(false);
-  const [editModalCity, setEditModalCity] = useState<City | undefined>(
-    undefined
-  );
+  const [selectedModalCity, setSelectedModalCity] = useState<
+    CityModel | undefined
+  >(undefined);
 
-  const handleEditCity = (editedCity: City) => {
-    setEditModalCity(editedCity);
+  const fetchCities = async () => {
+    try {
+      setIsLoading(true);
+      const response = await getCities();
+      setCities(response);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleEditCity = (editedCity: CityModel) => {
+    setSelectedModalCity(editedCity);
     setVisibleEditModal(true);
   };
 
-  const handleDeleteCity = (cityId: number) => {
-    // Silme işlemi
-    // ...
+  const handleDeleteCity = async (cityId: number) => {
+    try {
+      setIsLoading(true);
+      await deleteCity(cityId);
+      const currentCities = cities.filter((city) => city.id !== cityId);
+      setCities(currentCities);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleAddHotel = (cityId: number) => {
+  const handleAddHotel = (city: CityModel) => {
+    setSelectedModalCity(city);
     setVisibleCreateHotelModal(true);
   };
 
-  const handleCreateCity = (newCity: City) => {
-    setCities([...cities, newCity]);
-    setVisibleCreateModal(false);
+  const handleCreateCity = async (newCity: CreateCityModel) => {
+    try {
+      setIsLoading(true);
+      const response = await createCity(newCity);
+      setCities([...cities, response.data]);
+      setVisibleCreateModal(false);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleCreateHotel = (values: {
-    name: string;
-    description: string;
-    price: number;
-  }) => {
-    // Otel ekleme işlemi
-    // ...
-    setVisibleCreateHotelModal(false);
+  const onCreateHotel = async (payload: CreateHotelModel) => {
+    try {
+      setIsLoading(true);
+      await createCityHotel({
+        ...payload,
+        cityId: selectedModalCity?.id!,
+        isActive: true,
+      });
+      setVisibleCreateHotelModal(false);
+      setSelectedModalCity(undefined);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const onViewAllHotels = (cityId: number) => {
-    // React Router veya başka bir yönlendirme kütüphanesi kullanarak otel sayfasına yönlendirme yapılabilir.
-    // Örneğin:
-    navigate(`/hotel/${cityId}`);
+  const onCityEdit = async (payload: CityModel) => {
+    try {
+      setIsLoading(true);
+      await editCity(payload);
+      const updatedCities = cities.map((city) =>
+        city.id === payload.id ? { ...city, ...payload } : city
+      );
+      setCities(updatedCities);
+      setSelectedModalCity(undefined);
+      setVisibleEditModal(false);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  const onViewAllHotels = (city: CityModel) => {
+    navigate(`/hotel/${city.name}/${city.id}`);
+  };
+
+  const handleToggleIsActive = async (payload: CityModel) => {
+    try {
+      setIsLoading(true);
+      await editCity({ ...payload, isActive: !payload.isActive });
+      const updatedCities = cities.map((city) =>
+        city.id === payload.id ? { ...city, isActive: !city.isActive } : city
+      );
+      setCities(updatedCities);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const handleLoadComponent = async () => {
+      await fetchCities();
+    };
+    handleLoadComponent();
+  }, []);
 
   return (
     <Fragment>
@@ -75,36 +146,29 @@ const CityPage: React.FC = () => {
       />
 
       <CityListTable
+        isLoading={isLoading}
         cities={cities}
         onEditCity={handleEditCity}
         onDeleteCity={handleDeleteCity}
         onAddHotel={handleAddHotel}
         onViewAllHotels={onViewAllHotels}
+        onToggleIsActive={handleToggleIsActive}
       />
 
       <CityEditModal
         visible={visibleEditModal}
         onCancel={() => {
-          setEditModalCity(undefined);
+          setSelectedModalCity(undefined);
           setVisibleEditModal(false);
         }}
-        onOk={(values) => {
-          if (editModalCity) {
-            const updatedCities = cities.map((city) =>
-              city.id === editModalCity.id ? { ...city, ...values } : city
-            );
-            setCities(updatedCities);
-          }
-          setEditModalCity(undefined);
-          setVisibleEditModal(false);
-        }}
-        initialValues={editModalCity}
+        onOk={onCityEdit}
+        initialValues={selectedModalCity}
       />
 
       <CreateHotelModal
         visible={visibleCreateHotelModal}
         onCancel={() => setVisibleCreateHotelModal(false)}
-        onOk={handleCreateHotel}
+        onOk={onCreateHotel}
       />
 
       <CityCreateModal

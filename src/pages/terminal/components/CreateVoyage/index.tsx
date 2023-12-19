@@ -113,8 +113,8 @@ const CreateVoyageModal: React.FC<CreateVoyageModalProps> = ({
           />
         </Form.Item>
         <Form.Item
-          label="Uçak Kodu"
-          name="airplaneCode"
+          label="Otobüs Kodu"
+          name="busCode"
           rules={[{ required: true, message: "Bu alan zorunludur" }]}
         >
           <Input />
@@ -125,6 +125,7 @@ const CreateVoyageModal: React.FC<CreateVoyageModalProps> = ({
         <Form.Item
           label="Fiyat"
           name="price"
+          initialValue={0}
           rules={[{ required: true, message: "Bu alan zorunludur" }]}
         >
           <InputNumber

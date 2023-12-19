@@ -1,0 +1,25 @@
+.permission-modal {
+
+    .select-all-box {
+        font-weight: bold;
+    }
+
+    .ant-checkbox-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+
+        .ant-checkbox-wrapper {
+            flex-basis: 48%;
+            margin-bottom: 0;
+        }
+    }
+
+    @media screen and (max-width: 767px) {
+        .ant-checkbox-group {
+            .ant-checkbox-wrapper {
+                flex-basis: 100%;
+            }
+        }
+    }
+}

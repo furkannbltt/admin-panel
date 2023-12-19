@@ -25,6 +25,7 @@ export interface AirportFlight {
 }
 
 export interface CreateAirportFlightPayload {
+  airportId:number;
   startDate: string;
   endDate: string;
   airplaneCode: string;

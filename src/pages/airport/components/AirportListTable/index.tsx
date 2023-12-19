@@ -6,14 +6,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlaneDeparture } from "@fortawesome/free-solid-svg-icons";
 
 interface AirportListTableProps {
+  loading:boolean;
   airports: Airport[];
   onEditAirport: (airport: Airport) => void;
-  onToggleIsActive: (airportId: number) => void;
+  onToggleIsActive: (airport: Airport) => void;
   onViewAirportDetails: (airport: Airport) => void;
   onDeleteCity: (airportId: number) => void;
 }
 
 const AirportListTable: React.FC<AirportListTableProps> = ({
+  loading,
   airports,
   onEditAirport,
   onToggleIsActive,
@@ -38,7 +40,7 @@ const AirportListTable: React.FC<AirportListTableProps> = ({
       render: (isActive: boolean, record: Airport) => (
         <Switch
           checked={isActive}
-          onChange={() => onToggleIsActive(record.id)}
+          onChange={() => onToggleIsActive(record)}
         />
       ),
     },
@@ -78,7 +80,7 @@ const AirportListTable: React.FC<AirportListTableProps> = ({
     },
   ];
 
-  return <Table dataSource={airports} columns={columns} />;
+  return <Table loading={loading} dataSource={airports} columns={columns} />;
 };
 
 export default AirportListTable;

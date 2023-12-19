@@ -7,7 +7,8 @@ import UsersPage from "./pages/users";
 import CityPage from "./pages/city";
 import HotelPage from "./pages/hotel";
 import AirportPage from "./pages/airport";
-import TerminalPage from './pages/terminal/index';
+import TerminalPage from "./pages/terminal/index";
+import GroupsPage from "./pages/groups";
 
 const App: React.FC = () => {
   return (
@@ -56,7 +57,7 @@ const App: React.FC = () => {
             }
           />
           <Route
-            path="/hotel/:cityId"
+            path="/hotel/:cityName/:cityId"
             element={
               <PrivateRoute>
                 <Layout>
@@ -83,6 +84,17 @@ const App: React.FC = () => {
               <PrivateRoute>
                 <Layout>
                   <TerminalPage />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/group"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <GroupsPage />
                 </Layout>
               </PrivateRoute>
             }

@@ -6,7 +6,6 @@ export interface Terminal {
   isActive: boolean;
 }
 
-
 export interface CreateTerminal {
   name: string;
   description: string;
@@ -31,4 +30,5 @@ export interface CreateTerminalVoyagePayload {
   isActive: boolean;
   travelTime: string;
   price: number;
+  terminalId: number;
 }

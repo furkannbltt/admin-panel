@@ -1,12 +1,12 @@
 import React from "react";
 import { Modal, Form, Input } from "antd";
-import { City } from "../../types";
+import { CityModel } from "../../types";
 
 interface CityEditModalProps {
   visible: boolean;
   onCancel: () => void;
-  onOk: (values: City) => void;
-  initialValues?: City;
+  onOk: (values: CityModel) => void;
+  initialValues?: CityModel;
 }
 
 const CityEditModal: React.FC<CityEditModalProps> = ({

@@ -11,8 +11,6 @@ interface CreateFlightModalProps {
   onOk: (newFlight: CreateAirportFlightPayload) => void;
 }
 
-// ... (existing imports)
-
 const CreateFlightModal: React.FC<CreateFlightModalProps> = ({
   visible,
   onCancel,
@@ -126,6 +124,7 @@ const CreateFlightModal: React.FC<CreateFlightModalProps> = ({
         <Form.Item
           label="Fiyat"
           name="price"
+          initialValue={0}
           rules={[{ required: true, message: "Bu alan zorunludur" }]}
         >
           <InputNumber

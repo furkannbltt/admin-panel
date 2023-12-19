@@ -2,17 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button, Upload, Space, UploadProps } from "antd";
 import { UploadFile } from "antd/lib/upload/interface";
 import { HotelImage } from "../../types";
+import { addHotelImage } from "../../../../services/hotel/hotel";
 
 interface ImagesModalProps {
   visible: boolean;
+  hotelId: number;
   images: HotelImage[];
   onCancel: () => void;
+  onDelete: (imageId: string) => void;
 }
 
 const ImagesModal: React.FC<ImagesModalProps> = ({
   images,
   visible,
+  hotelId,
   onCancel,
+  onDelete,
 }) => {
   const [fileList, setFileList] = useState<UploadFile<HotelImage>[]>([]);
 
@@ -23,7 +28,7 @@ const ImagesModal: React.FC<ImagesModalProps> = ({
       uid: image.id.toString(),
       name: image.id.toString(),
       status: "done",
-      url: image.url,
+      url: `${process.env.REACT_APP_API_BASE_URL}${image.imageUrl}`,
     }));
   };
 
@@ -31,23 +36,38 @@ const ImagesModal: React.FC<ImagesModalProps> = ({
     setFileList(convertToUploadFileList(images));
   }, [images]);
 
-  const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
-  };
-
   const onRemove = async (file: UploadFile) => {
-    const imageId = parseInt(file.uid, 10);
-    console.log(imageId, "ekle");
+    const imageId = file.uid;
+    onDelete(imageId);
   };
 
-  const customRequest: UploadProps<UploadFile<HotelImage>>["customRequest"] = ({
-    file,
-    onSuccess,
-    onError,
-    onProgress,
-  }) => {
-    console.log(file, "deneme");
-  };
+  const customRequest: UploadProps<
+  UploadFile<HotelImage>
+>["customRequest"] = async ({ file, onSuccess, onError, onProgress }) => {
+  try {
+    const response = await addHotelImage({
+      images: [file as File],
+      hotelId: hotelId,
+    });
+
+    const addedImage = response.data[0]; 
+    setFileList((prevFileList) => [
+      ...prevFileList,
+      {
+        uid: addedImage.id.toString(),
+        name: addedImage.id.toString(),
+        status: "done",
+        url: `${process.env.REACT_APP_API_BASE_URL}${addedImage.imageUrl}`,
+      },
+    ]);
+
+    // @ts-ignore
+    onSuccess();
+  } catch (error) {
+    // @ts-ignore
+    onError();
+  }
+};
 
   return (
     <Modal
@@ -66,7 +86,6 @@ const ImagesModal: React.FC<ImagesModalProps> = ({
           listType="picture-card"
           fileList={fileList}
           onRemove={onRemove}
-          onChange={onChange}
           multiple
           accept="image/*"
         >

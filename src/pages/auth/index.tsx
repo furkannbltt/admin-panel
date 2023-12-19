@@ -1,13 +1,21 @@
-// src/components/LoginPage.tsx
-import React from 'react';
-import { Form, Input, Button, Checkbox, Typography } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import './style.scss'; // Sass dosyanızı import edin
+import React, { useContext } from "react";
+import { Form, Input, Button, Checkbox, Typography } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import "./style.scss";
+import { login } from "../../services/auth/auth";
+import { setUser } from "../../utils/storageHelper";
+import { AuthContext } from "../../context/Auth";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage: React.FC = () => {
-  const onFinish = (values: any) => {
-    console.log('Alınan değerler:', values);
-    // Burada login işlemleri yapılabilir
+  const { setUserInfo } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const onFinish = async (values: { email: string; password: string }) => {
+    await login(values.email, values.password).then((response) => {
+      setUser(response.data);
+      setUserInfo(response.data);
+      navigate("/activity");
+    });
   };
 
   return (
@@ -24,11 +32,11 @@ const LoginPage: React.FC = () => {
             rules={[
               {
                 required: true,
-                message: 'Lütfen e-posta adresinizi girin!',
+                message: "Lütfen e-posta adresinizi girin!",
               },
               {
-                type: 'email',
-                message: 'Lütfen geçerli bir e-posta adresi girin!',
+                type: "email",
+                message: "Lütfen geçerli bir e-posta adresi girin!",
               },
             ]}
           >
@@ -39,7 +47,7 @@ const LoginPage: React.FC = () => {
             rules={[
               {
                 required: true,
-                message: 'Lütfen şifrenizi girin!',
+                message: "Lütfen şifrenizi girin!",
               },
             ]}
           >

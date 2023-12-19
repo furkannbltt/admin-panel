@@ -9,6 +9,7 @@ import {
   faHotel,
   faPlane,
   faUsers,
+  faUsersBetweenLines,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { usePathsForMenuKeys } from "../../hooks/usePaths";
@@ -75,6 +76,15 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
         </div>
       </Link>,
       "bus"
+    ),
+    getItem(
+      <Link to="/group">
+        <div className="side-menu-item">
+          <FontAwesomeIcon icon={faUsersBetweenLines} />
+          {collapsed && <span className="label">Gruplar</span>}
+        </div>
+      </Link>,
+      "group"
     ),
     getItem(
       <Link to="/user">

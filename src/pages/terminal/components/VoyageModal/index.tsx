@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button, Modal, Tooltip } from "antd";
 import { TerminalVoyage, CreateTerminalVoyagePayload } from "../../types";
 import TerminalVoyageTable from "../VoyageListTable";
@@ -6,6 +6,12 @@ import { PlusOutlined } from "@ant-design/icons";
 import "./style.scss";
 import EditVoyageModal from "../EditVoyage";
 import CreateVoyageModal from "../CreateVoyage";
+import {
+  createTerminalVoyage,
+  deleteTerminalVoyage,
+  editTerminalVoyage,
+  getListVoyageByTerminalId,
+} from "../../../../services/terminal/terminal";
 interface TerminalVoyageDetailModalProps {
   visible: boolean;
   onCancel: () => void;
@@ -24,60 +30,95 @@ const TerminalVoyageDetailModal: React.FC<TerminalVoyageDetailModalProps> = ({
     TerminalVoyage | undefined
   >(undefined);
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchVoyages = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const response = await getListVoyageByTerminalId(terminalId);
+      setVoyages(response);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [terminalId]);
+
   useEffect(() => {
-    const mockVoyages: TerminalVoyage[] = [
-      {
-        id: 1,
-        startDate: "2023-01-01",
-        endDate: "2023-01-02",
-        busCode: "ABC123",
-        isActive: true,
-        travelTime: "2 hours",
-        price: 500,
-      },
-      {
-        id: 2,
-        startDate: "2023-02-01",
-        endDate: "2023-02-02",
-        busCode: "XYZ456",
-        isActive: false,
-        travelTime: "3 hours",
-        price: 700,
-      },
-    ];
+    const handleLoadComponent = async () => {
+      await fetchVoyages();
+    };
+    if (visible) {
+      handleLoadComponent();
+    }
+  }, [fetchVoyages, visible]);
 
-    setVoyages(mockVoyages);
-  }, [visible, terminalId]);
-
-  const handleEditVoyage = (editedVoyage: TerminalVoyage) => {
-    setEditModalVoyage(editedVoyage);
+  const handleEditVoyage = (editedFlight: TerminalVoyage) => {
+    setEditModalVoyage(editedFlight);
     setVisibleEditModal(true);
   };
 
-  const handleCreateVoyage = (newVoyage: CreateTerminalVoyagePayload) => {
-    const newDate: TerminalVoyage = {
-      ...newVoyage,
-      id: 1,
-      isActive: true,
-    };
-    setVoyages((prevState) => [...prevState, newDate]);
-    setVisibleCreateModal(false);
-  };
-  const handleToggleIsActive = (id: number) => {
-    // isActive durumunu değiştirme işlemini burada gerçekleştir
-    // ...
+  const onEditVoyage = async (payload: TerminalVoyage) => {
+    try {
+      setIsLoading(true);
+      await editTerminalVoyage(payload);
+      const updatedVoyages = voyages.map((voyages) =>
+        voyages.id === payload.id ? payload : voyages
+      );
+      setVoyages(updatedVoyages);
+      setVisibleEditModal(false);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleDelete = (id: number) => {
-    // Uçuş silme işlemini burada gerçekleştir
-    // ...
+  const handleCreateVoyage = async (newVoyage: CreateTerminalVoyagePayload) => {
+    try {
+      setIsLoading(true);
+      const response = await createTerminalVoyage({
+        ...newVoyage,
+        terminalId: terminalId,
+        isActive: true,
+      });
+      setVoyages((prevState) => [...prevState, response.data]);
+      setVisibleCreateModal(false);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleToggleIsActive = async (payload: TerminalVoyage) => {
+    try {
+      setIsLoading(true);
+      await editTerminalVoyage({ ...payload, isActive: !payload.isActive });
+      const updatedVoyages = voyages.map((voyage) =>
+        voyage.id === payload.id
+          ? { ...voyage, isActive: !voyage.isActive }
+          : voyage
+      );
+      setVoyages(updatedVoyages);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    try {
+      setIsLoading(true);
+      await deleteTerminalVoyage(id);
+      const currentVoyages = voyages.filter((voyage) => voyage.id !== id);
+      setVoyages(currentVoyages);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleCloseModals = () => {
     setVisibleEditModal(false);
     setVisibleCreateModal(false);
   };
-
   return (
     <Modal
       title="Sefer Detayları"
@@ -99,6 +140,7 @@ const TerminalVoyageDetailModal: React.FC<TerminalVoyageDetailModalProps> = ({
         </Tooltip>
       </div>
       <TerminalVoyageTable
+        loading={isLoading}
         onDelete={handleDelete}
         terminalVoyages={voyages}
         onEdit={handleEditVoyage}
@@ -112,7 +154,7 @@ const TerminalVoyageDetailModal: React.FC<TerminalVoyageDetailModalProps> = ({
             setEditModalVoyage(undefined);
             setVisibleEditModal(false);
           }}
-          onOk={handleEditVoyage}
+          onOk={onEditVoyage}
           initialValues={editModalVoyage}
         />
       )}

@@ -1,35 +1,50 @@
 import React from "react";
-import { Table, Button, Tooltip, Space, Popconfirm } from "antd";
+import { Table, Button, Tooltip, Space, Popconfirm, Switch } from "antd";
 import {
   EditOutlined,
   DeleteOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
-import { City } from "../../types";
+import { CityModel } from "../../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHotel } from "@fortawesome/free-solid-svg-icons";
 
 interface CityListTableProps {
-  cities: City[];
-  onEditCity: (city: City) => void;
+  isLoading:boolean;
+  cities: CityModel[];
+  onEditCity: (city: CityModel) => void;
   onDeleteCity: (cityId: number) => void;
-  onAddHotel: (cityId: number) => void;
-  onViewAllHotels: (cityId: number) => void;
+  onAddHotel: (city: CityModel) => void;
+  onViewAllHotels: (city: CityModel) => void;
+  onToggleIsActive: (city: CityModel) => void;
 }
 
 const CityListTable: React.FC<CityListTableProps> = ({
+  isLoading,
   cities,
   onEditCity,
   onDeleteCity,
   onAddHotel,
+  onToggleIsActive,
   onViewAllHotels,
 }) => {
-  const columns: ColumnsType<City> = [
+  const columns: ColumnsType<CityModel> = [
     {
       title: "İsim",
       dataIndex: "name",
       key: "name",
+    },
+    {
+      title: "Durum",
+      dataIndex: "isActive",
+      key: "isActive",
+      render: (isActive: boolean, record: CityModel) => (
+        <Switch
+          checked={isActive}
+          onChange={() => onToggleIsActive(record)}
+        />
+      ),
     },
     {
       title: "",
@@ -57,14 +72,14 @@ const CityListTable: React.FC<CityListTableProps> = ({
             <Button
               type="primary"
               icon={<FontAwesomeIcon icon={faHotel} />}
-              onClick={() => onAddHotel(record.id)}
+              onClick={() => onAddHotel(record)}
             />
           </Tooltip>
           <Tooltip title="Tümünü Gör">
             <Button
               type="default"
-              icon={<InfoCircleOutlined />} // Detay ikonu
-              onClick={() => onViewAllHotels(record.id)}
+              icon={<InfoCircleOutlined />}
+              onClick={() => onViewAllHotels(record)}
             />
           </Tooltip>
         </Space>
@@ -72,7 +87,7 @@ const CityListTable: React.FC<CityListTableProps> = ({
     },
   ];
 
-  return <Table dataSource={cities} columns={columns} />;
+  return <Table loading={isLoading} dataSource={cities} columns={columns} />;
 };
 
 export default CityListTable;

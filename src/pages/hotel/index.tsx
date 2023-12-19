@@ -3,17 +3,24 @@ import { Button, Select } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import ContentHeader from "../../components/ContentHeader";
-import { City, CreateHotelPayload } from "../city/types";
+import { CityModel, CreateHotelModel } from "../city/types";
 import HotelTable from "./components/HotelListTable";
 import { Hotel } from "./types";
 import EditHotelModal from "./components/EditHotelModal";
 import CreateHotelModal from "../city/components/CreateHotelModal";
 import ImagesModal from "./components/ViewImages";
+import { getCities } from "../../services/city/city";
+import {
+  createCityHotel,
+  deleteHotel,
+  deleteHotelImage,
+  editHotel,
+  getHotelsByCity,
+} from "../../services/hotel/hotel";
 
 const HotelPage: React.FC = () => {
-  const { cityId } = useParams();
-  const [cities, setCities] = useState<City[]>([]);
-  const [paramCity, setParamCity] = useState<City | undefined>(undefined);
+  const { cityName, cityId } = useParams();
+  const [cities, setCities] = useState<CityModel[]>([]);
   const [selectedCityId, setSelectedCityId] = useState<number | undefined>(
     undefined
   );
@@ -25,53 +32,28 @@ const HotelPage: React.FC = () => {
   const [imagesModalVisible, setImagesModalVisible] = useState(false);
 
   const fetchCities = async () => {
-    setCities([
-      { id: 1, name: "İstanbul" },
-      { id: 2, name: "Ankara" },
-    ]);
+    try {
+      const response = await getCities();
+      setCities(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const fetchCity = async () => {
-    setParamCity({ id: 1, name: "İstanbul" });
-  };
-
-  const fetchHotels = async () => {
-    setHotels([
-      {
-        id: 1,
-        name: "otel1",
-        description: "1234",
-        price: 123,
-        isActive: true,
-        images: [
-          {
-            url: "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-            id: 2,
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: "otel2",
-        description: "5",
-        price: 123,
-        isActive: true,
-        images: [
-          {
-            url: "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-            id: 2,
-          },
-        ],
-      },
-    ]);
-    setIsLoading(false);
+  const fetchCityHotels = async (cityId: number) => {
+    try {
+      const response = await getHotelsByCity(cityId);
+      setHotels(response);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     if (cityId) {
       const numberValue = parseFloat(cityId);
       !isNaN(numberValue) && setSelectedCityId(numberValue);
-      fetchCity();
     } else {
       fetchCities();
     }
@@ -85,7 +67,7 @@ const HotelPage: React.FC = () => {
 
   useEffect(() => {
     if (selectedCityId) {
-      fetchHotels();
+      fetchCityHotels(selectedCityId);
     }
   }, [selectedCityId]);
 
@@ -93,8 +75,20 @@ const HotelPage: React.FC = () => {
     setCreateModalVisible(true);
   };
 
-  const handleCreateOk = (hotel: CreateHotelPayload) => {
-    setCreateModalVisible(false);
+  const handleCreateOk = async (hotel: CreateHotelModel) => {
+    try {
+      setIsLoading(true);
+      const response = await createCityHotel({
+        ...hotel,
+        cityId: selectedCityId!,
+        isActive: true,
+      });
+      setHotels([...hotels, response.data]);
+      setCreateModalVisible(false);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleCreateCancel = () => {
@@ -106,17 +100,55 @@ const HotelPage: React.FC = () => {
     setEditModalVisible(true);
   };
 
-  const handleEditOk = (values: any) => {
-    setEditModalVisible(false);
+  const handleEditOk = async (payload: Hotel) => {
+    try {
+      setIsLoading(true);
+      await editHotel(payload);
+      const updatedHotels = hotels.map((hotel) =>
+        hotel.id === payload.id ? { ...hotel, ...payload } : hotel
+      );
+      setHotels(updatedHotels);
+      setEditModalVisible(false);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleEditCancel = () => {
     setEditModalVisible(false);
   };
 
-  const handleVisibleHotel = (id: number, value: boolean) => {};
+  const handleVisibleHotel = async (payload: Hotel) => {
+    try {
+      setIsLoading(true);
+      await editHotel({ ...payload, isActive: !payload.isActive });
+      const updatedHotels = hotels.map((hotel) =>
+        hotel.id === payload.id
+          ? { ...hotel, isActive: !hotel.isActive }
+          : hotel
+      );
+      setHotels(updatedHotels);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const handleDeleteHotel = (id: number) => {};
+  const handleDeleteHotel = async (hotelId: number) => {
+    try {
+      setIsLoading(true);
+      await deleteHotel({
+        cityId: selectedCityId!,
+        hotelId: hotelId,
+      });
+      const currentHotels = hotels.filter((hotel) => hotel.id !== hotelId);
+      setHotels(currentHotels);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const showImagesModal = (hotel: Hotel) => {
     setSelectedHotel(hotel);
@@ -125,12 +157,34 @@ const HotelPage: React.FC = () => {
 
   const handleImagesCancel = () => {
     setImagesModalVisible(false);
+    if (selectedHotel) {
+      const updatedHotels = hotels.map((hotel) =>
+        hotel.id === selectedHotel.id
+          ? { ...hotel, images: selectedHotel.images }
+          : hotel
+      );
+      setHotels(updatedHotels);
+    }
+  };
+
+  const handleImagesDelete = async (imageId: string) => {
+    try {
+      setIsLoading(true);
+      await deleteHotelImage(imageId);
+      const currentImages = (selectedHotel?.images || []).filter(
+        (image) => image.id !== imageId
+      );
+      setSelectedHotel({ ...selectedHotel!, images: currentImages });
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <Fragment>
       <ContentHeader
-        title={cityId && paramCity ? `${paramCity.name} otelleri` : "Oteller"}
+        title={cityId && cityName ? `${cityName} otelleri` : "Oteller"}
         actions={
           <Fragment>
             {cityId ? (
@@ -189,7 +243,9 @@ const HotelPage: React.FC = () => {
       {selectedHotel && (
         <ImagesModal
           visible={imagesModalVisible}
+          hotelId={selectedHotel.id}
           images={selectedHotel.images}
+          onDelete={handleImagesDelete}
           onCancel={handleImagesCancel}
         />
       )}

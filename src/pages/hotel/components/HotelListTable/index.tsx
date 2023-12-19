@@ -11,7 +11,7 @@ interface HotelTableProps {
   isLoading: boolean;
   onDelete: (id: number) => void;
   onEdit: (record: Hotel) => void;
-  onToggle: (id: number, isActive: boolean) => void;
+  onToggle: (record: Hotel) => void;
   onViewImages: (record: Hotel) => void;
 }
 
@@ -44,10 +44,7 @@ const HotelTable: React.FC<HotelTableProps> = ({
       dataIndex: "isActive",
       key: "isActive",
       render: (isActive: boolean, record: Hotel) => (
-        <Switch
-          checked={isActive}
-          onChange={(checked) => onToggle(record.id, checked)}
-        />
+        <Switch checked={isActive} onChange={() => onToggle(record)} />
       ),
     },
     {

@@ -6,13 +6,15 @@ import { ColumnsType } from "antd/es/table";
 import { displayedDateFormat } from "../../../../utils/helper";
 
 interface terminalVoyagesistTableProps {
+  loading:boolean;
   terminalVoyages: TerminalVoyage[];
-  onEdit: (airport: TerminalVoyage) => void;
-  onToggleIsActive: (airportId: number) => void;
-  onDelete: (airportId: number) => void;
+  onEdit: (voyage: TerminalVoyage) => void;
+  onToggleIsActive: (voyage: TerminalVoyage) => void;
+  onDelete: (voyageId: number) => void;
 }
 
 const FlightListTable: React.FC<terminalVoyagesistTableProps> = ({
+  loading,
   terminalVoyages,
   onEdit,
   onToggleIsActive,
@@ -32,9 +34,9 @@ const FlightListTable: React.FC<terminalVoyagesistTableProps> = ({
       render: (date: string) => displayedDateFormat(date),
     },
     {
-      title: "Uçak Kodu",
-      dataIndex: "airplaneCode",
-      key: "airplaneCode",
+      title: "Otobüs Kodu",
+      dataIndex: "busCode",
+      key: "busCode",
     },
     {
       title: "Seyahat Süresi",
@@ -53,7 +55,7 @@ const FlightListTable: React.FC<terminalVoyagesistTableProps> = ({
       render: (isActive: boolean, record: TerminalVoyage) => (
         <Switch
           checked={isActive}
-          onChange={() => onToggleIsActive(record.id)}
+          onChange={() => onToggleIsActive(record)}
         />
       ),
     },
@@ -83,7 +85,7 @@ const FlightListTable: React.FC<terminalVoyagesistTableProps> = ({
       ),
     },
   ];
-  return <Table dataSource={terminalVoyages} columns={columns} />;
+  return <Table loading={loading} dataSource={terminalVoyages} columns={columns} />;
 };
 
 export default FlightListTable;

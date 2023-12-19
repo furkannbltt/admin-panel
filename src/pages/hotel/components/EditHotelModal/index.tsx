@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import { Modal, Form, Input, InputNumber } from 'antd';
-import { EditHotelPayload } from '../../types';
+import React, { useEffect } from "react";
+import { Modal, Form, Input, InputNumber } from "antd";
+import { Hotel } from "../../types";
 
 interface EditHotelModalProps {
   visible: boolean;
   onCancel: () => void;
-  onOk: (values: EditHotelPayload) => void;
-  initialValues: EditHotelPayload | null;
+  onOk: (values: Hotel) => void;
+  initialValues: Hotel | null;
 }
 
 const EditHotelModal: React.FC<EditHotelModalProps> = ({
@@ -26,10 +26,10 @@ const EditHotelModal: React.FC<EditHotelModalProps> = ({
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
-      onOk(values);
+      onOk({ ...initialValues, ...values });
       form.resetFields();
     } catch (error) {
-      console.error('Validation failed', error);
+      console.error("Validation failed", error);
     }
   };
 
@@ -42,19 +42,23 @@ const EditHotelModal: React.FC<EditHotelModalProps> = ({
         form.resetFields();
         onCancel();
       }}
+      okText="Kaydet"
+      cancelText="İptal"
     >
       <Form form={form} layout="vertical">
         <Form.Item
           name="name"
           label="Adı"
-          rules={[{ required: true, message: 'Lütfen otel adını girin' }]}
+          rules={[{ required: true, message: "Lütfen otel adını girin" }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           name="description"
           label="Açıklama"
-          rules={[{ required: false, message: 'Lütfen otel açıklamasını girin' }]}
+          rules={[
+            { required: false, message: "Lütfen otel açıklamasını girin" },
+          ]}
         >
           <Input.TextArea />
         </Form.Item>
@@ -62,11 +66,11 @@ const EditHotelModal: React.FC<EditHotelModalProps> = ({
           name="price"
           label="Fiyat"
           rules={[
-            { required: true, message: 'Lütfen otel fiyatını girin' },
-            { type: 'number', min: 0, message: 'Geçerli bir sayı girin' },
+            { required: true, message: "Lütfen otel fiyatını girin" },
+            { type: "number", min: 0, message: "Geçerli bir sayı girin" },
           ]}
         >
-          <InputNumber style={{ width: '100%' }} />
+          <InputNumber style={{ width: "100%" }} />
         </Form.Item>
       </Form>
     </Modal>

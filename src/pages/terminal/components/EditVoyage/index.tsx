@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, DatePicker, InputNumber } from "antd";
 import dayjs from "dayjs";
-import { calculateTravelTime } from "../../../../utils/helper";
+import { calculateTravelTime, sentDateFormat } from "../../../../utils/helper";
 import { TerminalVoyage } from "../../types";
 
 interface EditVoyageModalProps {
@@ -18,31 +18,55 @@ const EditVoyageModal: React.FC<EditVoyageModalProps> = ({
   initialValues,
 }) => {
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    form.setFieldsValue({
-      ...initialValues,
-      startDate: dayjs(initialValues!.startDate),
-      endDate: dayjs(initialValues!.endDate),
-    });
-  }, [initialValues, form]);
+  const [travelTime, setTravelTime] = useState<string | undefined>(undefined);
 
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
       const editedFlight: TerminalVoyage = {
         ...values,
-        startDate: dayjs(values.startDate),
-        endDate: dayjs(values.endDate),
-        travelTime: calculateTravelTime(
-          dayjs(values.startDate),
-          dayjs(values.endDate)
-        ).toString(),
+        endDate: sentDateFormat(values.endDate.toString()),
+        startDate: sentDateFormat(values.startDate.toString()),
       };
-      onOk(editedFlight);
+      onOk({ ...initialValues, ...editedFlight });
       form.resetFields();
     } catch (error) {
       console.error("Validation failed:", error);
+    }
+  };
+
+  const handleStartDateChange = (
+    date: dayjs.Dayjs | null,
+    dateString: string
+  ) => {
+    const endDate = form.getFieldValue("endDate");
+    if (date && endDate) {
+      const calculatedTravelTime = calculateTravelTime(
+        date,
+        endDate
+      ).toString();
+      setTravelTime(calculatedTravelTime);
+      form.setFieldsValue({ travelTime });
+    }
+  };
+
+  useEffect(() => {
+    form.setFieldsValue({ travelTime });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [travelTime]);
+
+  const handleEndDateChange = (
+    date: dayjs.Dayjs | null,
+    dateString: string
+  ) => {
+    const startDate = form.getFieldValue("startDate");
+    if (date && startDate) {
+      const calculatedTravelTime = calculateTravelTime(
+        startDate,
+        date
+      ).toString();
+      setTravelTime(calculatedTravelTime);
+      form.setFieldsValue({ travelTime });
     }
   };
 
@@ -52,10 +76,19 @@ const EditVoyageModal: React.FC<EditVoyageModalProps> = ({
       visible={visible}
       onOk={handleOk}
       onCancel={onCancel}
-      okText="Oluştur"
+      okText="Kaydet"
       cancelText="İptal"
     >
-      <Form form={form} layout="vertical">
+      <Form
+        form={form}
+        layout="vertical"
+        initialValues={{
+          ...initialValues,
+          travelTime: initialValues.travelTime,
+          startDate: dayjs(initialValues!.startDate),
+          endDate: dayjs(initialValues!.endDate),
+        }}
+      >
         <Form.Item
           label="Başlangıç Tarihi"
           name="startDate"
@@ -67,6 +100,7 @@ const EditVoyageModal: React.FC<EditVoyageModalProps> = ({
             style={{
               width: "100%",
             }}
+            onChange={handleStartDateChange}
           />
         </Form.Item>
         <Form.Item
@@ -80,6 +114,7 @@ const EditVoyageModal: React.FC<EditVoyageModalProps> = ({
             style={{
               width: "100%",
             }}
+            onChange={handleEndDateChange}
           />
         </Form.Item>
         <Form.Item
@@ -95,6 +130,7 @@ const EditVoyageModal: React.FC<EditVoyageModalProps> = ({
         <Form.Item
           label="Fiyat"
           name="price"
+          initialValue={0}
           rules={[{ required: true, message: "Fiyat zorunludur." }]}
         >
           <InputNumber

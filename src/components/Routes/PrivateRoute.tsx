@@ -1,5 +1,6 @@
-import { FC, ReactNode, useMemo } from "react";
+import { FC, ReactNode, useContext, useMemo } from "react";
 import { Navigate } from "react-router-dom";
+import { AuthContext } from "../../context/Auth";
 
 interface IRouteProps {
   children: ReactNode;
@@ -7,8 +8,9 @@ interface IRouteProps {
 }
 
 const PrivateRoute: FC<IRouteProps> = ({ children, permissions }) => {
-    const loggedInUserData=true
-  const isAuthenticated = useMemo(() => !!loggedInUserData, [loggedInUserData]);
+  const { userInfo } = useContext(AuthContext);
+
+  const isAuthenticated = useMemo(() => !!userInfo, [userInfo]);
 
   if (
     isAuthenticated

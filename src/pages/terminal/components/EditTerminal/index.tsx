@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Select } from "antd";
 import { Terminal } from "../../types";
-import { City } from "../../../city/types";
+import { CityModel } from "../../../city/types";
 
 interface TerminalEditModalProps {
   visible: boolean;
   onCancel: () => void;
   onOk: (values: Terminal) => void;
   initialValues?: Terminal | undefined;
-  cities: City[];
+  cities: CityModel[];
 }
 
 const TerminalEditModal: React.FC<TerminalEditModalProps> = ({
@@ -29,7 +29,7 @@ const TerminalEditModal: React.FC<TerminalEditModalProps> = ({
     try {
       setLoading(true);
       const values = await form.validateFields();
-      onOk(values as Terminal);
+      onOk({ ...initialValues, ...values } as Terminal);
       form.resetFields();
       setLoading(false);
     } catch (error) {
@@ -50,7 +50,9 @@ const TerminalEditModal: React.FC<TerminalEditModalProps> = ({
         <Form.Item
           name="name"
           label="Name"
-          rules={[{ required: true, message: "Please enter the Terminal name" }]}
+          rules={[
+            { required: true, message: "Please enter the Terminal name" },
+          ]}
         >
           <Input />
         </Form.Item>
@@ -59,7 +61,10 @@ const TerminalEditModal: React.FC<TerminalEditModalProps> = ({
           name="description"
           label="Description"
           rules={[
-            { required: true, message: "Please enter the Terminal description" },
+            {
+              required: true,
+              message: "Please enter the Terminal description",
+            },
           ]}
         >
           <Input.TextArea />

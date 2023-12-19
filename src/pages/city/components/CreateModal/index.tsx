@@ -1,12 +1,12 @@
 
 import React from 'react';
 import { Modal, Form, Input } from 'antd';
-import { City } from '../../types';
+import {  CreateCityModel } from '../../types';
 
 interface CityCreateModalProps {
   visible: boolean;
   onCancel: () => void;
-  onOk: (values: City) => void;
+  onOk: (values: CreateCityModel) => void;
 }
 
 const CityCreateModal: React.FC<CityCreateModalProps> = ({ visible, onCancel, onOk }) => {
@@ -18,7 +18,7 @@ const CityCreateModal: React.FC<CityCreateModalProps> = ({ visible, onCancel, on
       visible={visible}
       onOk={() => {
         form.validateFields().then((values) => {
-          onOk({ id: 0, ...values });
+          onOk({ isActive:true, ...values });
           form.resetFields();
         });
       }}

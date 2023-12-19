@@ -1,8 +1,12 @@
+import { CityModel } from "../city/types";
+
 export interface Hotel {
   id: number;
   name: string;
   description: string;
   price: number;
+  cityId: number;
+  city: CityModel;
   isActive: boolean;
   images: HotelImage[];
 }
@@ -15,6 +19,6 @@ export interface EditHotelPayload {
 }
 
 export interface HotelImage {
-  url: string;
-  id: number;
+  imageUrl: string;
+  id: string;
 }

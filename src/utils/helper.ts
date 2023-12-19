@@ -27,3 +27,12 @@ export const calculateTravelTime = (
 
   return result.trim(); // Boşlukları temizle
 };
+
+export function getInitials(sentence: string) {
+  if (!sentence) return "";
+
+  const words = sentence.split(" ");
+  const initials = words.map((word) => word.charAt(0).toUpperCase());
+
+  return initials.join("");
+}

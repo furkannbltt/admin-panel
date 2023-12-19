@@ -3,17 +3,19 @@ import { Table, Button, Switch, Tooltip, Popconfirm, Space } from "antd";
 import { Terminal } from "../../types";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlaneDeparture } from "@fortawesome/free-solid-svg-icons";
+import { faBus } from "@fortawesome/free-solid-svg-icons";
 
 interface TerminalListTableProps {
+  loading:boolean;
   terminals: Terminal[];
   onEditTerminal: (data: Terminal) => void;
-  onToggleIsActive: (id: number) => void;
+  onToggleIsActive: (data: Terminal) => void;
   onViewTerminalDetails: (data: Terminal) => void;
   onDeleteCity: (id: number) => void;
 }
 
 const TerminalListTable: React.FC<TerminalListTableProps> = ({
+  loading,
   terminals,
   onEditTerminal,
   onToggleIsActive,
@@ -38,7 +40,7 @@ const TerminalListTable: React.FC<TerminalListTableProps> = ({
       render: (isActive: boolean, record: Terminal) => (
         <Switch
           checked={isActive}
-          onChange={() => onToggleIsActive(record.id)}
+          onChange={() => onToggleIsActive(record)}
         />
       ),
     },
@@ -55,11 +57,11 @@ const TerminalListTable: React.FC<TerminalListTableProps> = ({
             ></Button>
           </Tooltip>
 
-          <Tooltip title="Uçuşlar">
+          <Tooltip title="Seferler">
             <Button
               type="primary"
               onClick={() => onViewTerminalDetails(record)}
-              icon={<FontAwesomeIcon icon={faPlaneDeparture} />}
+              icon={<FontAwesomeIcon icon={faBus} />}
             ></Button>
           </Tooltip>
 
@@ -78,7 +80,7 @@ const TerminalListTable: React.FC<TerminalListTableProps> = ({
     },
   ];
 
-  return <Table dataSource={terminals} columns={columns} />;
+  return <Table loading={loading} dataSource={terminals} columns={columns} />;
 };
 
 export default TerminalListTable;

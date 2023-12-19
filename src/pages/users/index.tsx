@@ -1,67 +1,121 @@
-import React from 'react';
-import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
-import Title from 'antd/es/typography/Title';
-import { Button, Modal } from 'antd/lib';
-import "./style.scss"
-import { ExclamationCircleFilled } from '@ant-design/icons';
-const { confirm } = Modal;
-interface User {
-    id: number;
-    name: string;
-    email: string;
-}
+import React, { useState, useEffect, Fragment } from "react";
+import UserListTable from "./components/UserListTable";
+import EditUserClaimModal from "./components/EditUserClaimModal";
+import ContentHeader from "../../components/ContentHeader";
+import { UpdateUserClaimsModel, ClaimModel, UserModel } from "./types";
+import { deleteUser, getUsers } from "../../services/users/users";
+import {
+  getClaims,
+  getClaimsNotInTheUserQuery,
+  updateUserClaims,
+} from "../../services/claims/claims";
 
 const UsersPage: React.FC = () => {
+  const [users, setUsers] = useState<UserModel[]>([]);
+  const [claims, setClaims] = useState<ClaimModel[]>([]);
+  const [userClaims, setUserClaims] = useState<ClaimModel[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [visibleEditModal, setVisibleEditModal] = useState(false);
+  const [selectedModalUser, setSelectedModalUser] = useState<
+    UserModel | undefined
+  >(undefined);
 
-    // const mock: User[] = [
-    //     { id: 1, name: 'John Doe', email: 'john@example.com' },
-    // ];
+  const fetchUsers = async () => {
+    try {
+      setIsLoading(true);
+      const response = await getUsers();
+      setUsers(response);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    // const columns = [
-    //     { title: 'İsim', dataIndex: 'name', key: 'name' },
-    //     { title: 'Email', dataIndex: 'email', key: 'email' },
-    // ];
+  const fetchClaims = async () => {
+    try {
+      setIsLoading(true);
+      const response = await getClaims();
+      setClaims(response);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    // const actions: TableAction<User>[] = [
-    //     {
-    //         type: 'default',
-    //         icon: faPen,
-    //         label: "Düzenle",
-    //         onClick: (record) => {
-    //         },
-    //     },
-    //     {
-    //         type: 'primary',
-    //         icon: faTrash,
-    //         label: "Sil",
-    //         danger: true,
-    //         onClick: (record) => {
-    //             confirm({
-    //                 title: `${record.name} kullanıcısını silmek istediğinize emin misiniz?`,
-    //                 icon: <ExclamationCircleFilled />,
-    //                 okText: 'Evet',
-    //                 okType: 'danger',
-    //                 cancelText: 'Hayır',
-    //                 onOk() {
-    //                 },
-    //             });
-    //         },
-    //     },
-    // ];
+  const fetchUserClaims = async (id: number) => {
+    try {
+      setIsLoading(true);
+      const response = await getClaimsNotInTheUserQuery(id);
+      setUserClaims(response);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    return (
-        <div className='users-page-container'>
-            {/* <div className="users-page-container-header">
-                <Title level={2}>Kullanıcılar</Title>
-                <div className="actions">
-                    <Button type='primary'>
-                        Kullanıcı Ekle
-                    </Button>
-                </div>
-            </div>
-            <GeneralTable dataSource={mock} columns={columns} actions={actions} /> */}
-        </div>
-    );
+  const handleEditUserClaim = async (editedUser: UserModel) => {
+    setSelectedModalUser(editedUser);
+    await fetchUserClaims(editedUser.id);
+    setVisibleEditModal(true);
+  };
+
+  const handleDeleteUser = async (userId: number) => {
+    try {
+      setIsLoading(true);
+      await deleteUser(userId);
+      const currentUsers = users.filter((user) => user.id !== userId);
+      setUsers(currentUsers);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onUserClaims = async (payload: UpdateUserClaimsModel) => {
+    try {
+      setIsLoading(true);
+      await updateUserClaims(payload);
+      setSelectedModalUser(undefined);
+      setVisibleEditModal(false);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const handleLoadComponent = async () => {
+      await fetchUsers();
+      await fetchClaims();
+    };
+    handleLoadComponent();
+  }, []);
+
+  return (
+    <Fragment>
+      <ContentHeader title="Kullanıcılar" />
+      <UserListTable
+        isLoading={isLoading}
+        users={users}
+        onEditUserClaims={handleEditUserClaim}
+        onDeleteUser={handleDeleteUser}
+      />
+
+      {selectedModalUser && (
+        <EditUserClaimModal
+          userClaims={userClaims}
+          allClaims={claims}
+          visible={visibleEditModal}
+          onCancel={() => {
+            setSelectedModalUser(undefined);
+            setVisibleEditModal(false);
+          }}
+          onOk={onUserClaims}
+          user={selectedModalUser}
+        />
+      )}
+    </Fragment>
+  );
 };
 
 export default UsersPage;

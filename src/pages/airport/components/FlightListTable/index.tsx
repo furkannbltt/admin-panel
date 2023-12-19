@@ -6,13 +6,15 @@ import { ColumnsType } from "antd/es/table";
 import { displayedDateFormat } from "../../../../utils/helper";
 
 interface AirportFligthListTableProps {
+  loading: boolean;
   airportFligths: AirportFlight[];
-  onEdit: (airport: AirportFlight) => void;
-  onToggleIsActive: (airportId: number) => void;
-  onDelete: (airportId: number) => void;
+  onEdit: (flight: AirportFlight) => void;
+  onToggleIsActive: (flight: AirportFlight) => void;
+  onDelete: (flightId: number) => void;
 }
 
 const FlightListTable: React.FC<AirportFligthListTableProps> = ({
+  loading,
   airportFligths,
   onEdit,
   onToggleIsActive,
@@ -52,8 +54,9 @@ const FlightListTable: React.FC<AirportFligthListTableProps> = ({
       key: "isActive",
       render: (isActive: boolean, record: AirportFlight) => (
         <Switch
+          disabled
           checked={isActive}
-          onChange={() => onToggleIsActive(record.id)}
+          onChange={() => onToggleIsActive(record)}
         />
       ),
     },
@@ -64,6 +67,7 @@ const FlightListTable: React.FC<AirportFligthListTableProps> = ({
         <Space>
           <Tooltip title="Düzenle">
             <Button
+              disabled
               type="primary"
               icon={<EditOutlined />}
               onClick={() => onEdit(record)}
@@ -83,7 +87,9 @@ const FlightListTable: React.FC<AirportFligthListTableProps> = ({
       ),
     },
   ];
-  return <Table dataSource={airportFligths} columns={columns} />;
+  return (
+    <Table loading={loading} dataSource={airportFligths} columns={columns} />
+  );
 };
 
 export default FlightListTable;

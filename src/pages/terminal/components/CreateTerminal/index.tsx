@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Modal, Form, Input, Select } from "antd";
 import { CreateTerminal } from "../../types";
-import { City } from "../../../city/types";
+import { CityModel } from "../../../city/types";
 
 interface CreateTerminalModalProps {
   visible: boolean;
   onCancel: () => void;
   onOk: (values: CreateTerminal) => void;
-  cities: City[];
+  cities: CityModel[];
 }
 
 const CreateTerminalModal: React.FC<CreateTerminalModalProps> = ({
@@ -34,7 +34,7 @@ const CreateTerminalModal: React.FC<CreateTerminalModalProps> = ({
 
   return (
     <Modal
-      title="Create Airport"
+      title="Terminal Oluştur"
       visible={visible}
       onOk={handleOk}
       onCancel={onCancel}
@@ -43,26 +43,26 @@ const CreateTerminalModal: React.FC<CreateTerminalModalProps> = ({
       <Form form={form} layout="vertical">
         <Form.Item
           name="name"
-          label="Name"
-          rules={[{ required: true, message: "Please enter the airport name" }]}
+          label="İsim"
+          rules={[{ required: true, message: "Lütfen terminal adını girin" }]}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
           name="description"
-          label="Description"
-          rules={[{ required: true, message: "Please enter the airport description" }]}
+          label="Açıklama"
+          rules={[{ required: true, message: "Lütfen terminal açıklamasını girin" }]}
         >
           <Input.TextArea />
         </Form.Item>
 
         <Form.Item
           name="cityId"
-          label="City"
-          rules={[{ required: true, message: "Please select the city" }]}
+          label="Şehir"
+          rules={[{ required: true, message: "Lütfen bir şehir seçin" }]}
         >
-          <Select placeholder="Select a city">
+          <Select placeholder="Bir şehir seçin">
             {cities.map(city => (
               <Select.Option key={city.id} value={city.id}>
                 {city.name}

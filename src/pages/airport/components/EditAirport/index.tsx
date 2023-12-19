@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Select } from "antd";
 import { Airport } from "../../types";
-import { City } from "../../../city/types";
+import { CityModel } from "../../../city/types";
 
 interface AirportEditModalProps {
   visible: boolean;
   onCancel: () => void;
   onOk: (values: Airport) => void;
   initialValues?: Airport | undefined;
-  cities: City[];
+  cities: CityModel[];
 }
 
 const AirportEditModal: React.FC<AirportEditModalProps> = ({
@@ -29,7 +29,7 @@ const AirportEditModal: React.FC<AirportEditModalProps> = ({
     try {
       setLoading(true);
       const values = await form.validateFields();
-      onOk(values as Airport);
+      onOk({ ...initialValues, ...values } as Airport);
       form.resetFields();
       setLoading(false);
     } catch (error) {
