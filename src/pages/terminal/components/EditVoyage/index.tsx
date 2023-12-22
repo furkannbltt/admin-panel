@@ -131,7 +131,14 @@ const EditVoyageModal: React.FC<EditVoyageModalProps> = ({
           label="Fiyat"
           name="price"
           initialValue={0}
-          rules={[{ required: true, message: "Fiyat zorunludur." }]}
+          rules={[
+            { required: true, message: "Fiyat zorunludur." },
+            {
+              type: "number",
+              min: 1,
+              message: "Fiyat sıfırdan yüksel olmalıdır!",
+            },
+          ]}
         >
           <InputNumber
             style={{

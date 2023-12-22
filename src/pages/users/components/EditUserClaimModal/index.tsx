@@ -6,7 +6,7 @@ import "./style.scss";
 interface EditUserClaimModalProps {
   visible: boolean;
   allClaims: ClaimModel[];
-  userNotClaims: ClaimModel[];
+  userClaims: ClaimModel[];
   onCancel: () => void;
   onOk: (values: UpdateUserClaimsModel) => void;
   user: UserModel;
@@ -17,7 +17,7 @@ const EditUserClaimModal: React.FC<EditUserClaimModalProps> = ({
   onCancel,
   onOk,
   allClaims,
-  userNotClaims,
+  userClaims,
   user,
 }) => {
   const [form] = Form.useForm();
@@ -52,9 +52,7 @@ const EditUserClaimModal: React.FC<EditUserClaimModalProps> = ({
       <Form
         form={form}
         initialValues={{
-          claims: allClaims.filter(
-            (item1) => !userNotClaims.some((item2) => item2.id === item1.id)
-          ),
+          claims: userClaims.map((item) => item.id),
         }}
       >
         <Form.Item

@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Menu } from "antd";
-import type { MenuProps } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBus,
@@ -14,24 +13,37 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { usePathsForMenuKeys } from "../../hooks/usePaths";
 import "./style.scss";
+import { AuthContext } from "../../context/Auth";
+import { PermissonsType } from "../../models/models";
+import { ClaimModel } from "../../pages/users/types";
 
 interface SideBarProps {
   collapsed: boolean;
 }
 
-type MenuItem = Required<MenuProps>["items"][number];
+export interface MenuItem {
+  label: React.ReactNode;
+  key: React.Key | null;
+  claimKey: string;
+}
 
-function getItem(label: React.ReactNode, key?: React.Key | null): MenuItem {
+function getItem(
+  label: React.ReactNode,
+  key: React.Key | null,
+  claimKey: string
+) {
   return {
     key,
     label,
-  } as MenuItem;
+    claimKey,
+  };
 }
 
 const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
+  const { userClaimList } = useContext(AuthContext);
   const { pathname } = useLocation();
 
-  const items: MenuItem[] = [
+  const items = [
     getItem(
       <Link to="/activity">
         <div className="side-menu-item">
@@ -39,7 +51,8 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
           {collapsed && <span className="label">Aktiviteler</span>}
         </div>
       </Link>,
-      "activity"
+      "activity",
+      PermissonsType.Activity
     ),
     getItem(
       <Link to="/city">
@@ -48,7 +61,8 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
           {collapsed && <span className="label">Şehirler</span>}
         </div>
       </Link>,
-      "city"
+      "city",
+      PermissonsType.City
     ),
     getItem(
       <Link to="/hotel">
@@ -57,7 +71,8 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
           {collapsed && <span className="label">Oteller</span>}
         </div>
       </Link>,
-      "hotel"
+      "hotel",
+      PermissonsType.Hotel
     ),
     getItem(
       <Link to="/airport">
@@ -66,7 +81,8 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
           {collapsed && <span className="label">Havalimanları</span>}
         </div>
       </Link>,
-      "airport"
+      "airport",
+      PermissonsType.Airport
     ),
     getItem(
       <Link to="/terminal">
@@ -75,7 +91,8 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
           {collapsed && <span className="label">Terminaller</span>}
         </div>
       </Link>,
-      "bus"
+      "terminal",
+      PermissonsType.Terminal
     ),
     getItem(
       <Link to="/group">
@@ -84,7 +101,8 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
           {collapsed && <span className="label">Gruplar</span>}
         </div>
       </Link>,
-      "group"
+      "group",
+      PermissonsType.Group
     ),
     getItem(
       <Link to="/user">
@@ -93,11 +111,15 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
           {collapsed && <span className="label">Kullanıcılar</span>}
         </div>
       </Link>,
-      "user"
+      "user",
+      PermissonsType.Users
     ),
   ];
   const { openKeys, selectedKey } = usePathsForMenuKeys(items, pathname);
 
+  const filteredItems = items.filter((item) =>
+    userClaimList.some((claim: ClaimModel) => claim.name === item.claimKey)
+  );
   return (
     <Menu
       style={{ height: "100%", borderRight: 0, paddingTop: "4rem" }}
@@ -105,7 +127,7 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
       selectable={false}
       defaultOpenKeys={openKeys}
       mode="inline"
-      items={items}
+      items={filteredItems as any}
       selectedKeys={selectedKey as string[]}
     />
   );

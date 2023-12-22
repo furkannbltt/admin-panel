@@ -52,7 +52,7 @@ const CreateHotelModal: React.FC<CreateHotelModalProps> = ({
           label="Açıklama"
           rules={[
             {
-              required: false,
+              required: true,
               message: "Lütfen otel açıklamasını girin!",
             },
           ]}
@@ -68,7 +68,12 @@ const CreateHotelModal: React.FC<CreateHotelModalProps> = ({
               required: true,
               type: "number",
               message: "Lütfen geçerli bir fiyat girin!",
-            }
+            },
+            {
+              type: "number",
+              min: 1,
+              message: "Fiyat sıfırdan yüksek olmalı!",
+            },
           ]}
         >
           <InputNumber style={{ width: "100%" }} />

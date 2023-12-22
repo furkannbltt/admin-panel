@@ -6,7 +6,7 @@ export const sentDateFormat = (time: string) => {
 };
 
 export const displayedDateFormat = (
-  time: string,
+  time: string | Date,
   format: string = "YYYY-MM-DD HH:mm"
 ) => {
   return moment(time).format(format);

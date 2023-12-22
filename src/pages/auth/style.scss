@@ -38,3 +38,44 @@
     }
   }
 }
+
+.register-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  box-sizing: border-box;
+
+  @media (min-width: 768px) {
+    background: url('../../../public/background.jpg') center center/cover;
+  }
+
+  .register {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 3rem;
+    border-radius: 15px;
+    max-width: 400px;
+    width: 100%;
+    height: calc(100% - 3rem);
+    box-sizing: border-box;
+    margin: 0 1.5rem;
+
+    form {
+      width: 100%;
+
+      .ant-form-item {
+        margin-bottom: 16px;
+      }
+
+      .register-button {
+        width: 100%;
+      }
+
+      a {
+        float: right;
+      }
+    }
+  }
+}

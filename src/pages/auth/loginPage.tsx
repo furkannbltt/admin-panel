@@ -12,10 +12,16 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const onFinish = async (values: { email: string; password: string }) => {
     await login(values.email, values.password).then((response) => {
-      setUser(response.data);
-      setUserInfo(response.data);
-      navigate("/activity");
+      if (response?.data) {
+        setUser(response.data);
+        setUserInfo(response.data);
+        navigate("/activity");
+      }
     });
+  };
+
+  const handleRegisterClick = () => {
+    navigate("/register");
   };
 
   return (
@@ -57,8 +63,6 @@ const LoginPage: React.FC = () => {
             <Form.Item name="remember" valuePropName="checked" noStyle>
               <Checkbox>Beni Hatırla</Checkbox>
             </Form.Item>
-
-            <a href="/">Şifremi Unuttum</a>
           </Form.Item>
 
           <Form.Item>
@@ -66,6 +70,13 @@ const LoginPage: React.FC = () => {
               Giriş Yap
             </Button>
           </Form.Item>
+
+          <Typography.Text>
+            Henüz hesabınız yok mu?
+            <Button type="link" onClick={handleRegisterClick}>
+              Kayıt Ol
+            </Button>
+          </Typography.Text>
         </Form>
       </div>
     </div>

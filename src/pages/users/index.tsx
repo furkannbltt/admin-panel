@@ -6,7 +6,7 @@ import { UpdateUserClaimsModel, ClaimModel, UserModel } from "./types";
 import { deleteUser, getUsers } from "../../services/users/users";
 import {
   getClaims,
-  getClaimsNotInTheUserQuery,
+  getClaimsInTheUserQuery,
   updateUserClaims,
 } from "../../services/claims/claims";
 
@@ -45,7 +45,7 @@ const UsersPage: React.FC = () => {
   const fetchUserClaims = async (id: number) => {
     try {
       setIsLoading(true);
-      const response = await getClaimsNotInTheUserQuery(id);
+      const response = await getClaimsInTheUserQuery(id);
       setUserClaims(response);
       setIsLoading(false);
     } catch (error) {
@@ -103,7 +103,7 @@ const UsersPage: React.FC = () => {
 
       {selectedModalUser && (
         <EditUserClaimModal
-          userNotClaims={userClaims}
+          userClaims={userClaims}
           allClaims={claims}
           visible={visibleEditModal}
           onCancel={() => {

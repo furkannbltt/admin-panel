@@ -4,7 +4,7 @@ import { ColumnsType } from "antd/es/table";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { GroupModel } from "../../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faKey, faUserEdit } from "@fortawesome/free-solid-svg-icons";
+import { faLockOpen, faUserEdit } from "@fortawesome/free-solid-svg-icons";
 
 interface GroupListTableProps {
   isLoading: boolean;
@@ -63,7 +63,7 @@ const GroupListTable: React.FC<GroupListTableProps> = ({
             <Button
               type="dashed"
               onClick={() => onUpdateGroupClaims(record)}
-              icon={<FontAwesomeIcon icon={faKey} />}
+              icon={<FontAwesomeIcon icon={faLockOpen} />}
             ></Button>
           </Tooltip>
         </Space>

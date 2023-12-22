@@ -6,7 +6,7 @@ export interface BaseResponseModel<T> {
 
 export enum PermissonsType {
   Activity = "Aktiviteler Sayfası",
-  City = " Şehirler Sayfası",
+  City = "Şehirler Sayfası",
   Hotel = "Oteller Sayfası",
   Airport = "Havalimanları Sayfası",
   Terminal = "Terminaller Sayfası",

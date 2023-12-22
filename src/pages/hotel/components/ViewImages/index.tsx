@@ -2,14 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button, Upload, Space, UploadProps } from "antd";
 import { UploadFile } from "antd/lib/upload/interface";
 import { HotelImage } from "../../types";
-import { addHotelImage } from "../../../../services/hotel/hotel";
+import {
+  addHotelImage,
+  deleteHotelImage,
+} from "../../../../services/hotel/hotel";
 
 interface ImagesModalProps {
   visible: boolean;
   hotelId: number;
   images: HotelImage[];
   onCancel: () => void;
-  onDelete: (imageId: string) => void;
 }
 
 const ImagesModal: React.FC<ImagesModalProps> = ({
@@ -17,7 +19,6 @@ const ImagesModal: React.FC<ImagesModalProps> = ({
   visible,
   hotelId,
   onCancel,
-  onDelete,
 }) => {
   const [fileList, setFileList] = useState<UploadFile<HotelImage>[]>([]);
 
@@ -37,37 +38,38 @@ const ImagesModal: React.FC<ImagesModalProps> = ({
   }, [images]);
 
   const onRemove = async (file: UploadFile) => {
-    const imageId = file.uid;
-    onDelete(imageId);
+    await deleteHotelImage(file.uid);
+    const currentImages = fileList.filter((image) => image.uid !== file.uid);
+    setFileList(currentImages);
   };
 
   const customRequest: UploadProps<
-  UploadFile<HotelImage>
->["customRequest"] = async ({ file, onSuccess, onError, onProgress }) => {
-  try {
-    const response = await addHotelImage({
-      images: [file as File],
-      hotelId: hotelId,
-    });
+    UploadFile<HotelImage>
+  >["customRequest"] = async ({ file, onSuccess, onError, onProgress }) => {
+    try {
+      await addHotelImage({
+        images: [file as File],
+        hotelId: hotelId,
+      }).then((response) => {
+        const addedImage = response.data[0];
+        setFileList((prevFileList) => [
+          ...prevFileList,
+          {
+            uid: addedImage.id.toString(),
+            name: addedImage.id.toString(),
+            status: "done",
+            url: `${process.env.REACT_APP_API_BASE_URL}${addedImage.imageUrl}`,
+          },
+        ]);
+      });
 
-    const addedImage = response.data[0]; 
-    setFileList((prevFileList) => [
-      ...prevFileList,
-      {
-        uid: addedImage.id.toString(),
-        name: addedImage.id.toString(),
-        status: "done",
-        url: `${process.env.REACT_APP_API_BASE_URL}${addedImage.imageUrl}`,
-      },
-    ]);
-
-    // @ts-ignore
-    onSuccess();
-  } catch (error) {
-    // @ts-ignore
-    onError();
-  }
-};
+      // @ts-ignore
+      onSuccess();
+    } catch (error) {
+      // @ts-ignore
+      onError();
+    }
+  };
 
   return (
     <Modal

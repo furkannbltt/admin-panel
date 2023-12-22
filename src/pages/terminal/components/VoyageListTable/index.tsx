@@ -1,7 +1,7 @@
 import React from "react";
-import { Table, Button, Switch, Tooltip, Popconfirm, Space } from "antd";
+import { Table, Button, Tooltip, Popconfirm, Space } from "antd";
 import { TerminalVoyage } from "../../types";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
 import { displayedDateFormat } from "../../../../utils/helper";
 
@@ -16,8 +16,8 @@ interface terminalVoyagesistTableProps {
 const FlightListTable: React.FC<terminalVoyagesistTableProps> = ({
   loading,
   terminalVoyages,
-  onEdit,
-  onToggleIsActive,
+  // onEdit,
+  // onToggleIsActive,
   onDelete,
 }) => {
   const columns: ColumnsType<TerminalVoyage> = [
@@ -48,29 +48,29 @@ const FlightListTable: React.FC<terminalVoyagesistTableProps> = ({
       dataIndex: "price",
       key: "price",
     },
-    {
-      title: "Durum",
-      dataIndex: "isActive",
-      key: "isActive",
-      render: (isActive: boolean, record: TerminalVoyage) => (
-        <Switch
-          checked={isActive}
-          onChange={() => onToggleIsActive(record)}
-        />
-      ),
-    },
+    // {
+    //   title: "Durum",
+    //   dataIndex: "isActive",
+    //   key: "isActive",
+    //   render: (isActive: boolean, record: TerminalVoyage) => (
+    //     <Switch
+    //       checked={isActive}
+    //       onChange={() => onToggleIsActive(record)}
+    //     />
+    //   ),
+    // },
     {
       title: "",
       key: "actions",
       render: (text: string, record: TerminalVoyage) => (
         <Space>
-          <Tooltip title="Düzenle">
+          {/* <Tooltip title="Düzenle">
             <Button
               type="primary"
               icon={<EditOutlined />}
               onClick={() => onEdit(record)}
             />
-          </Tooltip>
+          </Tooltip> */}
           <Popconfirm
             title="Silmek istediğinize emin misiniz?"
             onConfirm={() => onDelete(record.id)}

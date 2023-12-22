@@ -1,0 +1,68 @@
+.notification-item-container {
+    margin-bottom: 0.5rem;
+    position: relative;
+
+    .borderer {
+        position: relative;
+        padding: 0.5rem;
+        border: 1px solid rgba(0, 0, 0, 0.182);
+        border-radius: 0.5rem;
+
+        .unReadDot {
+            visibility: hidden;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 12px 0 0 12px;
+            border-color: rgb(185, 0, 0) rgb(185, 0, 0) transparent transparent;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .right-side {
+            display: flex;
+            align-items: center;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .title {
+                font-weight: bold;
+            }
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            color: rgba(0, 0, 0, 0.862);
+        }
+
+        .delete-button {
+            visibility: hidden;
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+        }
+
+
+        &:hover {
+            .delete-button {
+                visibility: visible;
+            }
+        }
+    }
+
+    .un-read {
+        border: 1px solid rgb(185, 0, 0);
+        border-top-right-radius: 0;
+        .unReadDot{
+            visibility: visible;
+        }
+
+    }
+}

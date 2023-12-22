@@ -1,13 +1,13 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import getUser from "./storageHelper";
+import getUser, { removeUser } from "./storageHelper";
 const qs = require("qs");
 
 const baseUrl = `${process.env.REACT_APP_API_BASE_URL}${"api/"}`;
 
 const http = axios.create({
   baseURL: baseUrl,
-  timeout: 15000,
+  timeout: 50000,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json;charset=UTF-8",
@@ -48,22 +48,27 @@ http.interceptors.response.use(
   },
   async (error) => {
     if (error.response.status === 401) {
-      //Reflesh token
-      window.location.href = "/login";
+      toast.error("Oturumun Süresi Dolmuştur");
+      setTimeout(() => {
+        removeUser()
+        window.location.href = "/login";
+      }, 2000);
     }
-    toast.error(error.response?.data?.message);
-    if (error.response?.data && error.response.data.error) {
-      if (error.response.data.error.details) {
-        return Promise.reject(
-          error.response.data.error.message +
-            " " +
-            error.response.data.error.details
-        );
-      } else {
-        return Promise.reject(error.response.data.error.message);
-      }
-    }
-    return Promise.reject(error.response?.data);
+    toast.error(error.response?.data.Message);
+    toast.error(error.response?.data.message);
+
+    // if (error.response?.data && error.response.data.error) {
+    //   if (error.response.data.error.details) {
+    //     return Promise.reject(
+    //       error.response.data.error.message +
+    //         " " +
+    //         error.response.data.error.details
+    //     );
+    //   } else {
+    //     return Promise.reject(error.response.data.error.message);
+    //   }
+    // }
+    // return Promise.reject(error.response?.data);
   }
 );
 

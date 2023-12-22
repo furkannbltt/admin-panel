@@ -57,7 +57,7 @@ const EditHotelModal: React.FC<EditHotelModalProps> = ({
           name="description"
           label="Açıklama"
           rules={[
-            { required: false, message: "Lütfen otel açıklamasını girin" },
+            { required: true, message: "Lütfen otel açıklamasını girin" },
           ]}
         >
           <Input.TextArea />
@@ -67,7 +67,11 @@ const EditHotelModal: React.FC<EditHotelModalProps> = ({
           label="Fiyat"
           rules={[
             { required: true, message: "Lütfen otel fiyatını girin" },
-            { type: "number", min: 0, message: "Geçerli bir sayı girin" },
+            {
+              type: "number",
+              min: 1,
+              message: "Fiyat sıfırdan yüksel olmalıdır!",
+            },
           ]}
         >
           <InputNumber style={{ width: "100%" }} />

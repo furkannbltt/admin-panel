@@ -13,7 +13,6 @@ import { getCities } from "../../services/city/city";
 import {
   createCityHotel,
   deleteHotel,
-  deleteHotelImage,
   editHotel,
   getHotelsByCity,
 } from "../../services/hotel/hotel";
@@ -167,20 +166,6 @@ const HotelPage: React.FC = () => {
     }
   };
 
-  const handleImagesDelete = async (imageId: string) => {
-    try {
-      setIsLoading(true);
-      await deleteHotelImage(imageId);
-      const currentImages = (selectedHotel?.images || []).filter(
-        (image) => image.id !== imageId
-      );
-      setSelectedHotel({ ...selectedHotel!, images: currentImages });
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <Fragment>
       <ContentHeader
@@ -245,7 +230,6 @@ const HotelPage: React.FC = () => {
           visible={imagesModalVisible}
           hotelId={selectedHotel.id}
           images={selectedHotel.images}
-          onDelete={handleImagesDelete}
           onCancel={handleImagesCancel}
         />
       )}

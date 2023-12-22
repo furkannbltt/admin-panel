@@ -6,8 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import PrivateRoute from "./components/Routes/PrivateRoute";
-import LoginPage from "./pages/auth";
-import Layout from "./components/Layout";
+import LoginPage from "./pages/auth/loginPage";
 import UsersPage from "./pages/users";
 import CityPage from "./pages/city";
 import HotelPage from "./pages/hotel";
@@ -16,6 +15,7 @@ import TerminalPage from "./pages/terminal/index";
 import GroupsPage from "./pages/groups";
 import SettingsPage from "./pages/settings";
 import { PermissonsType } from "./models/models";
+import RegisterPage from "./pages/auth/registerPage";
 
 const App: React.FC = () => {
   return (
@@ -24,13 +24,12 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Navigate to={"/activity"} />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route
             path="/activity"
             element={
               <PrivateRoute permissions={[PermissonsType.Activity]}>
-                <Layout>
-                  <div>dasdas</div>
-                </Layout>
+                <div>dasdas</div>
               </PrivateRoute>
             }
           />
@@ -38,9 +37,7 @@ const App: React.FC = () => {
             path="/user"
             element={
               <PrivateRoute permissions={[PermissonsType.Users]}>
-                <Layout>
-                  <UsersPage />
-                </Layout>
+                <UsersPage />
               </PrivateRoute>
             }
           />
@@ -48,9 +45,7 @@ const App: React.FC = () => {
             path="/city"
             element={
               <PrivateRoute permissions={[PermissonsType.City]}>
-                <Layout>
-                  <CityPage />
-                </Layout>
+                <CityPage />
               </PrivateRoute>
             }
           />
@@ -58,9 +53,7 @@ const App: React.FC = () => {
             path="/hotel"
             element={
               <PrivateRoute permissions={[PermissonsType.Hotel]}>
-                <Layout>
-                  <HotelPage />
-                </Layout>
+                <HotelPage />
               </PrivateRoute>
             }
           />
@@ -68,9 +61,7 @@ const App: React.FC = () => {
             path="/hotel/:cityName/:cityId"
             element={
               <PrivateRoute permissions={[PermissonsType.Hotel]}>
-                <Layout>
-                  <HotelPage />
-                </Layout>
+                <HotelPage />
               </PrivateRoute>
             }
           />
@@ -79,9 +70,7 @@ const App: React.FC = () => {
             path="/airport"
             element={
               <PrivateRoute permissions={[PermissonsType.Airport]}>
-                <Layout>
-                  <AirportPage />
-                </Layout>
+                <AirportPage />
               </PrivateRoute>
             }
           />
@@ -90,9 +79,7 @@ const App: React.FC = () => {
             path="/terminal"
             element={
               <PrivateRoute permissions={[PermissonsType.Terminal]}>
-                <Layout>
-                  <TerminalPage />
-                </Layout>
+                <TerminalPage />
               </PrivateRoute>
             }
           />
@@ -101,9 +88,7 @@ const App: React.FC = () => {
             path="/group"
             element={
               <PrivateRoute permissions={[PermissonsType.Group]}>
-                <Layout>
-                  <GroupsPage />
-                </Layout>
+                <GroupsPage />
               </PrivateRoute>
             }
           />
@@ -112,9 +97,7 @@ const App: React.FC = () => {
             path="/settings"
             element={
               <PrivateRoute>
-                <Layout>
-                  <SettingsPage />
-                </Layout>
+                <SettingsPage />
               </PrivateRoute>
             }
           />

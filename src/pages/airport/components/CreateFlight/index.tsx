@@ -125,7 +125,14 @@ const CreateFlightModal: React.FC<CreateFlightModalProps> = ({
           label="Fiyat"
           name="price"
           initialValue={0}
-          rules={[{ required: true, message: "Bu alan zorunludur" }]}
+          rules={[
+            { required: true, message: "Bu alan zorunludur" },
+            {
+              type: "number",
+              min: 1,
+              message: "Fiyat sıfırdan yüksel olmalıdır!",
+            },
+          ]}
         >
           <InputNumber
             style={{

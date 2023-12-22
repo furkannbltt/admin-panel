@@ -14,7 +14,7 @@ export const getClaimsNotInTheUserQuery = (userId: number) => {
 
 export const getClaimsInTheUserQuery = (userId: number) => {
   return http.get<any, ClaimDBModel[]>(
-    `/operationClaims/OperationClaimsInTheUserQuery/${userId}`
+    `/Users/GetUserClaimList/${userId}`
   );
 };
 
@@ -34,7 +34,7 @@ export const getListNotInTheGroup = (groupId: number) => {
 
 export const updateUserClaims = (payload: UpdateUserClaimsDBModel) => {
   return http.post<any, BaseResponseModel<ClaimDBModel>>(
-    `/users/updateUserClaims`,
+    `/users/userClaimUpdate`,
     payload
   );
 };

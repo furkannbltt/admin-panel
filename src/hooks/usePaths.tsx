@@ -1,7 +1,6 @@
-import { SubMenuType } from "antd/es/menu/hooks/useItems";
-import { ItemType } from "antd/lib/menu/hooks/useItems";
+import { MenuItem } from "../components/SideBar";
 
-export const usePathsForMenuKeys = (items: ItemType[], pathname: string) => {
+export const usePathsForMenuKeys = (items: MenuItem[], pathname: string) => {
   const path = pathname.split("/").filter((p) => p);
 
   if (path.length === 0)
@@ -12,7 +11,7 @@ export const usePathsForMenuKeys = (items: ItemType[], pathname: string) => {
 
   const selectedKey = items.find((item) =>
     path.includes(item?.key as string)
-  ) as SubMenuType;
+  );
   if (path.length === 1)
     return {
       openKeys: [path[0]],

@@ -25,7 +25,7 @@ const EditGroupUsersModal: React.FC<EditGroupUsersModalProps> = ({
 
   const handleOk = () => {
     form.validateFields().then((values) => {
-      onOk({ groupId: 0, userId: values.users || [] }); // groupId'i nasıl alacağınıza bağlı olarak güncelleyebilirsiniz
+      onOk({ groupId: group.id, userId: values.users || [] }); // groupId'i nasıl alacağınıza bağlı olarak güncelleyebilirsiniz
       form.resetFields();
     });
   };

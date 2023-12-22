@@ -1,7 +1,7 @@
 import React from "react";
-import { Table, Button, Switch, Tooltip, Popconfirm, Space } from "antd";
+import { Table, Button, Tooltip, Popconfirm, Space } from "antd";
 import { AirportFlight } from "../../types";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
 import { displayedDateFormat } from "../../../../utils/helper";
 
@@ -16,8 +16,8 @@ interface AirportFligthListTableProps {
 const FlightListTable: React.FC<AirportFligthListTableProps> = ({
   loading,
   airportFligths,
-  onEdit,
-  onToggleIsActive,
+  // onEdit,
+  // onToggleIsActive,
   onDelete,
 }) => {
   const columns: ColumnsType<AirportFlight> = [
@@ -48,31 +48,31 @@ const FlightListTable: React.FC<AirportFligthListTableProps> = ({
       dataIndex: "price",
       key: "price",
     },
-    {
-      title: "Durum",
-      dataIndex: "isActive",
-      key: "isActive",
-      render: (isActive: boolean, record: AirportFlight) => (
-        <Switch
-          disabled
-          checked={isActive}
-          onChange={() => onToggleIsActive(record)}
-        />
-      ),
-    },
+    // {
+    //   title: "Durum",
+    //   dataIndex: "isActive",
+    //   key: "isActive",
+    //   render: (isActive: boolean, record: AirportFlight) => (
+    //     <Switch
+    //       disabled
+    //       checked={isActive}
+    //       onChange={() => onToggleIsActive(record)}
+    //     />
+    //   ),
+    // },
     {
       title: "",
       key: "actions",
       render: (text: string, record: AirportFlight) => (
         <Space>
-          <Tooltip title="Düzenle">
+          {/* <Tooltip title="Düzenle">
             <Button
               disabled
               type="primary"
               icon={<EditOutlined />}
               onClick={() => onEdit(record)}
             />
-          </Tooltip>
+          </Tooltip> */}
           <Popconfirm
             title="Silmek istediğinize emin misiniz?"
             onConfirm={() => onDelete(record.id)}

@@ -25,7 +25,7 @@ const EditGroupClaimModal: React.FC<EditGroupClaimModalProps> = ({
 
   const handleOk = () => {
     form.validateFields().then((values) => {
-      onOk({ groupId: 0, claimId: values.claims || [] }); // groupId'i nasıl alacağınıza bağlı olarak güncelleyebilirsiniz
+      onOk({ groupId: group.id, claimId: values.claims || [] }); // groupId'i nasıl alacağınıza bağlı olarak güncelleyebilirsiniz
       form.resetFields();
     });
   };

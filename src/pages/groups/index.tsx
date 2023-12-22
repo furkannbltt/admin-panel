@@ -149,6 +149,7 @@ const GroupsPage: React.FC = () => {
       setIsLoading(true);
       await updateGroupUsers(payload);
       setIsLoading(false);
+      setVisibleEditGroupUsersModal(false)
     } catch (error) {
       console.log(error);
     }
@@ -158,6 +159,7 @@ const GroupsPage: React.FC = () => {
     try {
       setIsLoading(true);
       await updateGroupClaims(payload);
+      setVisibleEditGroupClaimModal(false)
       setIsLoading(false);
     } catch (error) {
       console.log(error);

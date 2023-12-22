@@ -13,6 +13,7 @@ import { removeUser } from "../../utils/storageHelper";
 import { useNavigate } from "react-router-dom";
 import { getInitials } from "../../utils/helper";
 import "./style.scss";
+import NotificationComponent from "../Notifications";
 
 const { Sider, Content } = AntLayout;
 
@@ -56,18 +57,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <div className="header-right-section">
               {/* <Space size="middle"> */}
               <div className="avatar-container">
-              {!userInfo.imageUrl ? (
+                {/* {!userInfo.imageUrl ? ( */}
                 <Avatar style={{ background: "#1677ff" }} shape="square">
                   {getInitials(userInfo.name)}
                 </Avatar>
-              ) : (
+                {/* ) : (
                 <Avatar
                   style={{ background: "#1677ff" }}
                   shape="square"
                   src={userInfo.imageUrl}
                   alt={userInfo.username}
                 />
-              )}
+              )} */}
               </div>
               <span className="user-name">{userInfo?.name}</span>
               <Tooltip title="Ayarlar">
@@ -79,6 +80,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   icon={<SettingOutlined />}
                 />
               </Tooltip>
+              <NotificationComponent/>
               <Tooltip title="Çıkış Yap">
                 <Button
                   type="text"

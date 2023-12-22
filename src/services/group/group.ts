@@ -30,15 +30,15 @@ export const createGroup = (payload: CreateGroupDBModel) => {
 };
 
 export const updateGroupUsers = (payload: UpdateGroupUsersDBModel) => {
-  return http.put<any, BaseResponseModel<UserDBModel[]>>(
+  return http.post<any, BaseResponseModel<UserDBModel[]>>(
     `/group/updateGroupUsers`,
     payload
   );
 };
 
 export const updateGroupClaims = (payload: UpdateGroupClaimDBModel) => {
-  return http.put<any, BaseResponseModel<ClaimDBModel[]>>(
-    `/group/updateGroupClaims`,
+  return http.post<any, BaseResponseModel<ClaimDBModel[]>>(
+    `/group/groupClaimsUpdate`,
     payload
   );
 };
