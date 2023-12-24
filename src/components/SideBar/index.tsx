@@ -48,7 +48,11 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
       <Link to="/activity">
         <div className="side-menu-item">
           <FontAwesomeIcon icon={faClipboard} />
-          {collapsed && <span className="label">Aktiviteler</span>}
+          {
+            <span className={`label ${!collapsed ? "collapsed" : ""}`}>
+              Aktiviteler
+            </span>
+          }
         </div>
       </Link>,
       "activity",
@@ -58,7 +62,11 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
       <Link to="/city">
         <div className="side-menu-item">
           <FontAwesomeIcon icon={faCity} />
-          {collapsed && <span className="label">Şehirler</span>}
+          {
+            <span className={`label ${!collapsed ? "collapsed" : ""}`}>
+              Şehirler
+            </span>
+          }
         </div>
       </Link>,
       "city",
@@ -68,7 +76,11 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
       <Link to="/hotel">
         <div className="side-menu-item">
           <FontAwesomeIcon icon={faHotel} />
-          {collapsed && <span className="label">Oteller</span>}
+          {
+            <span className={`label ${!collapsed ? "collapsed" : ""}`}>
+              Oteller
+            </span>
+          }
         </div>
       </Link>,
       "hotel",
@@ -78,7 +90,11 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
       <Link to="/airport">
         <div className="side-menu-item">
           <FontAwesomeIcon icon={faPlane} />
-          {collapsed && <span className="label">Havalimanları</span>}
+          {
+            <span className={`label ${!collapsed ? "collapsed" : ""}`}>
+              Havalimanları
+            </span>
+          }
         </div>
       </Link>,
       "airport",
@@ -88,7 +104,11 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
       <Link to="/terminal">
         <div className="side-menu-item">
           <FontAwesomeIcon icon={faBus} />
-          {collapsed && <span className="label">Terminaller</span>}
+          {
+            <span className={`label ${!collapsed ? "collapsed" : ""}`}>
+              Terminaller
+            </span>
+          }
         </div>
       </Link>,
       "terminal",
@@ -98,7 +118,11 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
       <Link to="/group">
         <div className="side-menu-item">
           <FontAwesomeIcon icon={faUsersBetweenLines} />
-          {collapsed && <span className="label">Gruplar</span>}
+          {
+            <span className={`label ${!collapsed ? "collapsed" : ""}`}>
+              Gruplar
+            </span>
+          }
         </div>
       </Link>,
       "group",
@@ -108,7 +132,11 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
       <Link to="/user">
         <div className="side-menu-item">
           <FontAwesomeIcon icon={faUsers} />
-          {collapsed && <span className="label">Kullanıcılar</span>}
+          {
+            <span className={`label ${!collapsed ? "collapsed" : ""}`}>
+              Kullanıcılar
+            </span>
+          }
         </div>
       </Link>,
       "user",
