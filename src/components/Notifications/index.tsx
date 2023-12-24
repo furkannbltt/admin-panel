@@ -41,12 +41,13 @@ const NotificationComponent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connection, userInfo?.id]);
 
-  const deleteNotification = (notificationId: number) => {
+  const deleteNotification = async (notificationId: number) => {
     if (
       connection &&
       connection.state === signalR.HubConnectionState.Connected
     ) {
-      connection
+      setLoading(true);
+      await connection
         .invoke("DeleteNotification", notificationId.toString())
         .then(() => {
           const currentNotification = notificationList.filter(
@@ -61,7 +62,8 @@ const NotificationComponent = () => {
         })
         .catch((err) => {
           console.error(err);
-        });
+        })
+        .finally(() => setLoading(false));
     }
   };
 
@@ -175,6 +177,7 @@ const NotificationComponent = () => {
       >
         {notificationList.map((notification: NotificationModel) => (
           <NotificationItem
+            loading={loading}
             key={notification.id}
             data={notification}
             onDelete={deleteNotification}

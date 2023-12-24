@@ -5,12 +5,18 @@ import { Button, Col, Row, Tooltip } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 
 interface IProps {
+  loading: boolean;
   data: NotificationModel;
   onDelete: (id: number) => void;
   onRead: (id: number) => void;
 }
 
-const NotificationItem: React.FC<IProps> = ({ data, onDelete, onRead }) => {
+const NotificationItem: React.FC<IProps> = ({
+  loading,
+  data,
+  onDelete,
+  onRead,
+}) => {
   const formatSender = (notification: NotificationModel): string => {
     if (notification.users) {
       return notification.users.name;
@@ -51,6 +57,7 @@ const NotificationItem: React.FC<IProps> = ({ data, onDelete, onRead }) => {
         <div className="delete-button">
           <Tooltip title="Sil">
             <Button
+              loading={loading}
               onClick={() => onDelete(data.id)}
               icon={<DeleteOutlined />}
             ></Button>

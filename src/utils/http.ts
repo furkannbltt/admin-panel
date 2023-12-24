@@ -52,6 +52,7 @@ http.interceptors.response.use(
       setTimeout(() => {
         removeUser()
         window.location.href = "/login";
+        
       }, 2000);
     }
     toast.error(error.response?.data.Message);
