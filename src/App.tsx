@@ -16,6 +16,7 @@ import GroupsPage from "./pages/groups";
 import SettingsPage from "./pages/settings";
 import { PermissonsType } from "./models/models";
 import RegisterPage from "./pages/auth/registerPage";
+import ActivityPage from "./pages/activity";
 
 const App: React.FC = () => {
   return (
@@ -29,7 +30,7 @@ const App: React.FC = () => {
             path="/activity"
             element={
               <PrivateRoute permissions={[PermissonsType.Activity]}>
-                <div>dasdas</div>
+                <ActivityPage/>
               </PrivateRoute>
             }
           />

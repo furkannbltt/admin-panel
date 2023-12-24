@@ -6,14 +6,30 @@ import "./index.css";
 import AuthProvider from "./context/Auth";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import NotificationProvider from "./context/Notification";
+import { ConfigProvider } from "antd";
+import  trTR  from 'antd/lib/locale/tr_TR';
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <AuthProvider>
-    <ToastContainer/>
+    <NotificationProvider>
+    <ToastContainer position="bottom-right"/>
+    <ConfigProvider
+    locale={trTR}
+    // theme={{
+    //   token: {
+       
+    //     colorBgContainer: '#001529',
+    //   },
+    // }}
+  >
     <App />
+  </ConfigProvider>
+    
+    </NotificationProvider>
   </AuthProvider>
 );
 

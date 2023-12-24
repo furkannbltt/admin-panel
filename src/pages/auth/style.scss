@@ -13,11 +13,10 @@
     display: flex;
     align-items: center;
     background-color: white;
-    padding: 3rem;
+    padding: 5rem 3rem;
     border-radius: 15px;
     max-width: 400px;
     width: 100%;
-    height: calc(100% - 3rem);
     box-sizing: border-box;
     margin: 0 1.5rem;
 
@@ -54,16 +53,22 @@
     display: flex;
     align-items: center;
     background-color: white;
-    padding: 3rem;
+    padding: 5rem 3rem;
     border-radius: 15px;
     max-width: 400px;
     width: 100%;
-    height: calc(100% - 3rem);
     box-sizing: border-box;
     margin: 0 1.5rem;
 
+    @media (max-width: 768px) {
+      padding: 2rem;
+
+    }
+
     form {
       width: 100%;
+
+
 
       .ant-form-item {
         margin-bottom: 16px;
@@ -78,4 +83,9 @@
       }
     }
   }
+}
+
+.logo {
+  width: 100%;
+  margin-bottom: 2rem;
 }

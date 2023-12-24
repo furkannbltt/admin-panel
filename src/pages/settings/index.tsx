@@ -11,8 +11,12 @@ import ContentHeader from "../../components/ContentHeader";
 import { changePasswordUser, editUser } from "../../services/users/users";
 import { AuthDto } from "../../services/auth/types";
 import { AuthContext } from "../../context/Auth";
+import { NofiticationContext } from "../../context/Notification";
+import NotificationListTable from "./components/NotificationListTable";
 
 const SettingsPage: React.FC = () => {
+  const { notificationList } = useContext(NofiticationContext);
+
   const [userInfo, setUserInfo] = useState<UserModel>({
     id: 0,
     email: "",
@@ -56,40 +60,47 @@ const SettingsPage: React.FC = () => {
 
   return (
     <Fragment>
-      <ContentHeader title="Ayarlar" />
       <div className="settings-page">
-        <div className="profile-section">
-          <Avatar size={100}>{getInitials(userInfo.name)}</Avatar>
-          <div className="profile-details">
-            <span className="name">{userInfo.name}</span>
-            <Tooltip title="Profili Düzenle">
+        <div className="profile-section-wrapper">
+          <ContentHeader title="Ayarlar" />
+          <div className="profile-section">
+            <Avatar size={100}>{getInitials(userInfo.name)}</Avatar>
+            <div className="profile-details">
+              <span className="name">{userInfo.name}</span>
+              <Tooltip title="Profili Düzenle">
+                <Button
+                  type="default"
+                  onClick={() => setEditProfileVisible(true)}
+                  icon={<EditOutlined />}
+                />
+              </Tooltip>
+            </div>
+            <div className="footer">
               <Button
-                type="default"
-                onClick={() => setEditProfileVisible(true)}
-                icon={<EditOutlined />}
-              />
-            </Tooltip>
-          </div>
-          <div className="footer">
-            <Button
-              type="primary"
-              onClick={() => setChangePasswordVisible(true)}
-            >
-              Şifre Değiştir
-            </Button>
-            <Popconfirm
-              title="Silmek istediğinize emin misiniz?"
-              onConfirm={() => setChangePasswordVisible(true)}
-              okText="Evet"
-              cancelText="Hayır"
-            >
-              <Button danger type="primary" icon={<DeleteOutlined />}>
-                Hesabımı Sil
+                type="primary"
+                onClick={() => setChangePasswordVisible(true)}
+              >
+                Şifre Değiştir
               </Button>
-            </Popconfirm>
+              <Popconfirm
+                title="Silmek istediğinize emin misiniz?"
+                onConfirm={() => setChangePasswordVisible(true)}
+                okText="Evet"
+                cancelText="Hayır"
+              >
+                <Button danger type="primary" icon={<DeleteOutlined />}>
+                  Hesabımı Sil
+                </Button>
+              </Popconfirm>
+            </div>
           </div>
         </div>
-        <div className="notification-section"></div>
+
+        <div className="notification-section">
+          <ContentHeader title="Bildirimler" />
+
+          <NotificationListTable notifications={notificationList} />
+        </div>
         <EditProfileModal
           visible={editProfileVisible}
           onCancel={() => setEditProfileVisible(false)}

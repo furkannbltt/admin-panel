@@ -32,7 +32,7 @@ const NotificationItem: React.FC<IProps> = ({ data, onDelete, onRead }) => {
 
   return (
     <div className="notification-item-container">
-      <div className={`borderer ${!data.isRead ? "un-read" : ""}`}>
+      <div className={`borderer ${!data.isRead ? "" : ""}`}>
         <Row>
           <Col span={24} className="content">
             <div className="title">{data.title}</div>

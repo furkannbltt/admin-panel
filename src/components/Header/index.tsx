@@ -1,6 +1,6 @@
 import React from 'react';
-import { Layout, theme } from 'antd';
-
+import { Layout } from 'antd';
+import "./style.scss"
 const { Header: AntHeader } = Layout;
 
 interface HeaderProps {
@@ -8,11 +8,8 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ children }) => {
-    const {
-        token: { colorBgContainer },
-    } = theme.useToken();
 
-    return <AntHeader style={{ padding: 0, background: colorBgContainer }} >
+    return <AntHeader className='header-container' style={{ padding: 0, background: "#001529" }} >
         {children}
     </AntHeader>
 };

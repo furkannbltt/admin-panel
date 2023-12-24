@@ -121,15 +121,23 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
     userClaimList.some((claim: ClaimModel) => claim.name === item.claimKey)
   );
   return (
-    <Menu
-      style={{ height: "100%", borderRight: 0, paddingTop: "4rem" }}
-      multiple={false}
-      selectable={false}
-      defaultOpenKeys={openKeys}
-      mode="inline"
-      items={filteredItems as any}
-      selectedKeys={selectedKey as string[]}
-    />
+    <div className="side-bar-wrapper">
+      {collapsed ? (
+        <img className="logo" src="/biglogo.png" alt="turcotravel" />
+      ) : (
+        <img className="logo" src="/logo.png" alt="turcotravel" />
+      )}
+      <Menu
+        theme="dark"
+        className="menu"
+        multiple={false}
+        selectable={false}
+        defaultOpenKeys={openKeys}
+        mode="inline"
+        items={filteredItems as any}
+        selectedKeys={selectedKey as string[]}
+      />
+    </div>
   );
 };
 

@@ -101,7 +101,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             flexDirection: "column",
             padding: 24,
             height: "100%",
-            // background: colorBgContainer,
+            background: colorBgContainer,
           }}
         >
           <div

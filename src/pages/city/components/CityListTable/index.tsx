@@ -75,7 +75,7 @@ const CityListTable: React.FC<CityListTableProps> = ({
               onClick={() => onAddHotel(record)}
             />
           </Tooltip>
-          <Tooltip title="Tümünü Gör">
+          <Tooltip title="Otelleri Gör">
             <Button
               type="default"
               icon={<InfoCircleOutlined />}

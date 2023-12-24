@@ -1,0 +1,24 @@
+.header-container {
+    background-color: #001529;
+    color: rgba(255, 255, 255, 0.65);
+    transition: 0.5s !important;
+
+    svg {
+        color: rgba(255, 255, 255, 0.65);
+        transition: 0.5s !important;
+
+    }
+
+    button {
+        transition: 0.5s !important;
+
+        &:hover {
+
+            color: white !important;
+
+            svg {
+                color: white;
+            }
+        }
+    }
+}

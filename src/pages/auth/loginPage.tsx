@@ -32,6 +32,7 @@ const LoginPage: React.FC = () => {
           initialValues={{ remember: true }}
           onFinish={onFinish}
         >
+          <img src="biglogo.png" alt="turcotravel" className="logo" />
           <Typography.Title level={1}>Hoşgeldiniz</Typography.Title>
           <Form.Item
             name="email"
