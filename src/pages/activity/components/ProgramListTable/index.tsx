@@ -21,9 +21,9 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({
 }) => {
   const columns: ColumnsType<ActivitiesProgramModel> = [
     {
-      title: "İsim",
-      dataIndex: "name",
-      key: "name",
+      title: "Başlık",
+      dataIndex: "title",
+      key: "title",
     },
     {
       title: "Açıklama",

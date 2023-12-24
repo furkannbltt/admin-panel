@@ -14,7 +14,7 @@ import {
 
 interface ActivityVisitDetailModalProps {
   visible: boolean;
-  onCancel: () => void;
+  onCancel: (currentData: ActivitiesVisitModel[]) => void;
   visits: ActivitiesVisitModel[];
   activityId: number;
 }
@@ -41,7 +41,7 @@ const ActivityVisitDetailModal: React.FC<ActivityVisitDetailModalProps> = ({
   const onEditVisit = async (editedVisit: ActivitiesVisitModel) => {
     try {
       setIsLoading(true);
-      await updateActivityVisit(editedVisit);
+      await updateActivityVisit({ ...editedVisit, activitiesId: activityId });
       const updatedVisits = visits.map((visit) =>
         visit.id === editedVisit.id ? editedVisit : visit
       );
@@ -70,7 +70,11 @@ const ActivityVisitDetailModal: React.FC<ActivityVisitDetailModalProps> = ({
   const handleToggleIsActive = async (payload: ActivitiesVisitModel) => {
     try {
       setIsLoading(true);
-      await updateActivityVisit({ ...payload, isActive: !payload.isActive });
+      await updateActivityVisit({
+        ...payload,
+        activitiesId: activityId,
+        isActive: !payload.isActive,
+      });
       const updatedVisits = visits.map((visit) =>
         visit.id === payload.id
           ? { ...visit, isActive: !visit.isActive }
@@ -106,7 +110,7 @@ const ActivityVisitDetailModal: React.FC<ActivityVisitDetailModalProps> = ({
       visible={visible}
       onCancel={() => {
         handleCloseModals();
-        onCancel();
+        onCancel(visits);
       }}
       footer={null}
       width={1500}

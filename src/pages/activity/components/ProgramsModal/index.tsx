@@ -14,7 +14,7 @@ import {
 
 interface ActivityProgramDetailModalProps {
   visible: boolean;
-  onCancel: () => void;
+  onCancel: (currentData: ActivitiesProgramModel[]) => void;
   programs: ActivitiesProgramModel[];
   activityId: number;
 }
@@ -25,14 +25,14 @@ const ActivityProgramDetailModal: React.FC<ActivityProgramDetailModalProps> = ({
   activityId,
   onCancel,
 }) => {
-  const [programs, setPrograms] = useState<ActivitiesProgramModel[]>(programsData);
+  const [programs, setPrograms] =
+    useState<ActivitiesProgramModel[]>(programsData);
   const [visibleEditModal, setVisibleEditModal] = useState(false);
   const [visibleCreateModal, setVisibleCreateModal] = useState(false);
   const [editModalProgram, setEditModalProgram] = useState<
     ActivitiesProgramModel | undefined
   >(undefined);
   const [isLoading, setIsLoading] = useState(false);
-console.log(programsData,"213")
   const handleEditProgram = (editedProgram: ActivitiesProgramModel) => {
     setEditModalProgram(editedProgram);
     setVisibleEditModal(true);
@@ -41,7 +41,10 @@ console.log(programsData,"213")
   const onEditProgram = async (editedProgram: ActivitiesProgramModel) => {
     try {
       setIsLoading(true);
-      await updateActivityProgram(editedProgram);
+      await updateActivityProgram({
+        ...editedProgram,
+        activitiesId: activityId,
+      });
       const updatedPrograms = programs.map((program) =>
         program.id === editedProgram.id ? editedProgram : program
       );
@@ -70,7 +73,11 @@ console.log(programsData,"213")
   const handleToggleIsActive = async (payload: ActivitiesProgramModel) => {
     try {
       setIsLoading(true);
-      await updateActivityProgram({ ...payload, isActive: !payload.isActive });
+      await updateActivityProgram({
+        ...payload,
+        activitiesId: activityId,
+        isActive: !payload.isActive,
+      });
       const updatedPrograms = programs.map((program) =>
         program.id === payload.id
           ? { ...program, isActive: !program.isActive }
@@ -106,20 +113,22 @@ console.log(programsData,"213")
       visible={visible}
       onCancel={() => {
         handleCloseModals();
-        onCancel();
+        onCancel(programs);
       }}
       footer={null}
       width={1500}
     >
-      <div className="program-action-container">
-        <Tooltip title="Program Ekle">
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => setVisibleCreateModal(true)}
-          />
-        </Tooltip>
-      </div>
+      {!programs.length && (
+        <div className="program-action-container">
+          <Tooltip title="Program Ekle">
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => setVisibleCreateModal(true)}
+            />
+          </Tooltip>
+        </div>
+      )}
       <ProgramListTable
         loading={isLoading}
         programs={programs}

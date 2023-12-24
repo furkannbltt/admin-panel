@@ -38,6 +38,7 @@ export interface ActivitiesProgramModel {
   title: string;
   description: string;
   isActive: boolean;
+  activitiesId: number
 }
 
 export interface AddActivitiesProgramModel {
@@ -52,6 +53,7 @@ export interface ActivitiesVisitModel {
   name: string;
   description: string;
   isActive: boolean;
+  activitiesId: number;
 }
 
 export interface AddActivitiesVisitModel {

@@ -33,15 +33,15 @@ export interface UpdateActivityDBModel {
   cityId: number;
 }
 
-
 export interface ActivitiesProgramDBModel {
   id: number;
   title: string;
   description: string;
   isActive: boolean;
+  activitiesId: number;
 }
 
-export interface AddActivitiesProgramDBModel  {
+export interface AddActivitiesProgramDBModel {
   title: string;
   description: string;
   isActive: boolean;
@@ -52,6 +52,7 @@ export interface ActivitiesVisitDBModel {
   id: number;
   name: string;
   description: string;
+  activitiesId: number;
   isActive: boolean;
 }
 

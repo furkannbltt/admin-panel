@@ -73,7 +73,6 @@ const NotificationComponent = () => {
       connection
         .invoke("ReadNotification")
         .then((e) => {
-          console.log(e);
           // setNotificationList((prevNotifications) =>
           //     prevNotifications.map((notification) =>
           //         notification.id === notificationId

@@ -80,7 +80,6 @@ const ActivityPage: React.FC = () => {
   const handleCreateActivity = async (newActivity: CreateActivityModel) => {
     try {
       setIsLoading(true);
-      console.log(newActivity, "geldi");
       const response = await createActivity(newActivity);
       setActivities([...activities, response.data]);
       setVisibleCreateModal(false);
@@ -229,8 +228,9 @@ const ActivityPage: React.FC = () => {
               ? [selectedModalActivity.activitiesProgram]
               : []
           }
-          onCancel={() => {
+          onCancel={async () => {
             setSelectedModalActivity(undefined);
+            await fetchActivities();
             setVisibleProgramDetailModal(false);
           }}
           visible={visibleProgramDetailModal}
@@ -241,8 +241,9 @@ const ActivityPage: React.FC = () => {
         <ActivityVisitDetailModal
           activityId={selectedModalActivity.id}
           visits={selectedModalActivity.activitiesVisits}
-          onCancel={() => {
+          onCancel={async () => {
             setSelectedModalActivity(undefined);
+            await fetchActivities();
             setVisibleVisitDetailModal(false);
           }}
           visible={visibleVisitDetailModal}
