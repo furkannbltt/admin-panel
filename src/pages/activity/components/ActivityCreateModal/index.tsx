@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Modal,
   Form,
@@ -12,6 +12,7 @@ import {
 import { UploadOutlined } from "@ant-design/icons";
 import { CreateActivityModel } from "../../types";
 import { CityModel } from "../../../city/types";
+import ReactQuill from "react-quill";
 
 interface CreateActivityModalProps {
   visible: boolean;
@@ -26,6 +27,9 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
   onOk,
 }) => {
   const [form] = Form.useForm();
+  const inclusionServicesRef = useRef(null);
+  const exclusionServicesRef = useRef(null);
+  
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
   const handleOk = async () => {
@@ -49,8 +53,8 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
     multiple: true,
     maxCount: 5,
     type: "drag",
-    listType:"picture",
-    accept:"image/*"
+    listType: "picture",
+    accept: "image/*",
   };
 
   return (
@@ -59,7 +63,6 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
       visible={visible}
       onOk={handleOk}
       onCancel={() => {
-        form.resetFields();
         onCancel();
       }}
       okText="Kaydet"
@@ -115,6 +118,30 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
           ]}
         >
           <Input.TextArea />
+        </Form.Item>
+        <Form.Item
+          name="inclusionServices"
+          label="Dahil olan servisler."
+          rules={[
+            {
+              required: true,
+              message: "Zorunlu alandır!",
+            },
+          ]}
+        >
+          <ReactQuill ref={inclusionServicesRef} placeholder="Metin giriniz" />
+        </Form.Item>
+        <Form.Item
+          name="exclusionServices"
+          label="Dahil olmayan servisler."
+          rules={[
+            {
+              required: true,
+              message: "Zorunlu alandır!",
+            },
+          ]}
+        >
+          <ReactQuill ref={exclusionServicesRef} placeholder="Metin giriniz" />
         </Form.Item>
         <Form.Item
           label="Fiyat"

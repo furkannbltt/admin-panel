@@ -1,3 +1,5 @@
+import { CityModel } from "../city/types";
+
 export interface Airport {
   id: number;
   name: string;
@@ -22,6 +24,8 @@ export interface AirportFlight {
   isActive: boolean;
   travelTime: string;
   price: number;
+  description: string;
+  targetCity: CityModel;
 }
 
 export interface CreateAirportFlightPayload {
@@ -32,4 +36,6 @@ export interface CreateAirportFlightPayload {
   isActive: boolean;
   travelTime: string;
   price: number;
+  description: string;
+  cityId: number;
 }

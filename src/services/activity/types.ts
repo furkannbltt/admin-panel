@@ -11,6 +11,8 @@ export interface ActivityDBModel {
   activitiesProgram: ActivitiesProgramDBModel;
   activitiesVisits: ActivitiesVisitDBModel[];
   images: ImageDBModel[];
+  inclusionServices: string;
+  exclusionServices: string;
 }
 
 export interface CreateActivityDBModel {
@@ -21,6 +23,8 @@ export interface CreateActivityDBModel {
   price: number;
   cityId: number;
   images: File[];
+  inclusionServices: string;
+  exclusionServices: string;
 }
 
 export interface UpdateActivityDBModel {
@@ -31,6 +35,8 @@ export interface UpdateActivityDBModel {
   isActive: boolean;
   price: number;
   cityId: number;
+  inclusionServices: string;
+  exclusionServices: string;
 }
 
 export interface ActivitiesProgramDBModel {

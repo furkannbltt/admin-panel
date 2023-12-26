@@ -1,3 +1,5 @@
+import { CityDBModel } from "../city/types";
+
 export interface AirportDBModel {
   id: number;
   name: string;
@@ -14,6 +16,8 @@ export interface AirportFlightDBModel {
   isActive: boolean;
   travelTime: string;
   price: number;
+  description: string;
+  targetCity: CityDBModel;
 }
 
 export interface CreateAirportDBModel {
@@ -31,6 +35,8 @@ export interface CreateAirportFlightDBModel {
   isActive: boolean;
   travelTime: string;
   price: number;
+  description: string;
+  cityId: number;
 }
 
 export interface DeleteAirportFlightDBModel {

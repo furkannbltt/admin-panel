@@ -24,11 +24,9 @@ const CityEditModal: React.FC<CityEditModalProps> = ({
       onOk={() => {
         form.validateFields().then((values) => {
           onOk({ ...initialValues, ...values });
-          form.resetFields();
         });
       }}
       onCancel={() => {
-        form.resetFields();
         onCancel();
       }}
       okText="Kaydet"

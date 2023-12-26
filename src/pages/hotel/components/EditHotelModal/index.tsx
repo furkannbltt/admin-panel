@@ -27,7 +27,6 @@ const EditHotelModal: React.FC<EditHotelModalProps> = ({
     try {
       const values = await form.validateFields();
       onOk({ ...initialValues, ...values });
-      form.resetFields();
     } catch (error) {
       console.error("Validation failed", error);
     }
@@ -39,7 +38,6 @@ const EditHotelModal: React.FC<EditHotelModalProps> = ({
       visible={visible}
       onOk={handleOk}
       onCancel={() => {
-        form.resetFields();
         onCancel();
       }}
       okText="Kaydet"

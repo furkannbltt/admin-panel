@@ -24,7 +24,6 @@ const CreateTerminalModal: React.FC<CreateTerminalModalProps> = ({
       setLoading(true);
       const values = await form.validateFields();
       onOk(values as CreateTerminal);
-      form.resetFields();
       setLoading(false);
     } catch (error) {
       console.error("Validation failed:", error);

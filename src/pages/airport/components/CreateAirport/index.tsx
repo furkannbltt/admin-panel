@@ -24,7 +24,6 @@ const CreateAirportModal: React.FC<CreateAirportModalProps> = ({
       setLoading(true);
       const values = await form.validateFields();
       onOk(values as CreateAirport);
-      form.resetFields();
       setLoading(false);
     } catch (error) {
       console.error("Validation failed:", error);

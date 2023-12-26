@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, DatePicker, InputNumber } from "antd";
+import { Modal, Form, Input, DatePicker, InputNumber, Select } from "antd";
 import { CreateTerminalVoyagePayload } from "../../types";
 import locale from "antd/es/date-picker/locale/tr_TR";
 import { calculateTravelTime, sentDateFormat } from "../../../../utils/helper";
 import dayjs from "dayjs";
+import { CityModel } from "../../../city/types";
 
 interface CreateVoyageModalProps {
   visible: boolean;
+  cities: CityModel[];
   onCancel: () => void;
   onOk: (newFlight: CreateTerminalVoyagePayload) => void;
 }
 
 const CreateVoyageModal: React.FC<CreateVoyageModalProps> = ({
   visible,
+  cities,
   onCancel,
   onOk,
 }) => {
@@ -28,7 +31,6 @@ const CreateVoyageModal: React.FC<CreateVoyageModalProps> = ({
         startDate: sentDateFormat(values.startDate.toString()),
       };
       onOk(payload);
-      form.resetFields();
       setTravelTime(undefined);
     } catch (error) {
       console.error("Validation failed:", error);
@@ -69,7 +71,7 @@ const CreateVoyageModal: React.FC<CreateVoyageModalProps> = ({
 
   return (
     <Modal
-      title="Yeni Uçuş Oluştur"
+      title="Yeni Sefer Oluştur"
       visible={visible}
       onOk={handleOk}
       onCancel={onCancel}
@@ -112,14 +114,43 @@ const CreateVoyageModal: React.FC<CreateVoyageModalProps> = ({
           />
         </Form.Item>
         <Form.Item
-          label="Otobüs Kodu"
+          name="description"
+          label="Açıklama"
+          rules={[
+            {
+              required: true,
+              message: "Lütfen açıklama giriniz!",
+            },
+          ]}
+        >
+          <Input.TextArea />
+        </Form.Item>
+        <Form.Item
+          label="Sefer Saati"
           name="busCode"
           rules={[{ required: true, message: "Bu alan zorunludur" }]}
         >
           <Input />
         </Form.Item>
-        <Form.Item label="Seyahat Süresi" name="travelTime">
-          <Input readOnly />
+        <Form.Item
+          label="Seyahat Süresi"
+          name="travelTime"
+          rules={[{ required: true, message: "Bu alan zorunludur" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="cityId"
+          label="Hedef Şehir"
+          rules={[{ required: true, message: "Lütfen bir şehir seçin" }]}
+        >
+          <Select placeholder="Hedef Şehir seçin">
+            {cities.map((city) => (
+              <Select.Option key={city.id} value={city.id}>
+                {city.name}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item
           label="Fiyat"

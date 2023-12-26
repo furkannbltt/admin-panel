@@ -22,7 +22,6 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
       visible={visible}
       onOk={() => form.submit()}
       onCancel={() => {
-        form.resetFields();
         onCancel();
       }}
       okText="Değiştir"

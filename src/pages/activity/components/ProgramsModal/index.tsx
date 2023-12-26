@@ -149,11 +149,13 @@ const ActivityProgramDetailModal: React.FC<ActivityProgramDetailModalProps> = ({
         />
       )}
 
-      <ProgramCreateModal
-        visible={visibleCreateModal}
-        onCancel={() => setVisibleCreateModal(false)}
-        onOk={handleCreateProgram}
-      />
+      {visibleCreateModal && (
+        <ProgramCreateModal
+          visible={visibleCreateModal}
+          onCancel={() => setVisibleCreateModal(false)}
+          onOk={handleCreateProgram}
+        />
+      )}
     </Modal>
   );
 };

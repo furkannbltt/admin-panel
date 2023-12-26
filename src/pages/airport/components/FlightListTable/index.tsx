@@ -4,6 +4,7 @@ import { AirportFlight } from "../../types";
 import { DeleteOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
 import { displayedDateFormat } from "../../../../utils/helper";
+import { CityModel } from "../../../city/types";
 
 interface AirportFligthListTableProps {
   loading: boolean;
@@ -34,9 +35,20 @@ const FlightListTable: React.FC<AirportFligthListTableProps> = ({
       render: (date: string) => displayedDateFormat(date),
     },
     {
-      title: "Uçak Kodu",
+      title: "Açıklama",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Sefer Saati",
       dataIndex: "airplaneCode",
       key: "airplaneCode",
+    },
+    {
+      title: "Hedef Şehir",
+      dataIndex: "targetCity",
+      key: "targetCity",
+      render: (targetCity: CityModel) => targetCity.name,
     },
     {
       title: "Seyahat Süresi",

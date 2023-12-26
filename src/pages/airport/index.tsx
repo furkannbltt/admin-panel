@@ -153,28 +153,35 @@ const AirportPage: React.FC = () => {
         onViewAirportDetails={onViewAirportDetails}
       />
 
-      <AirportEditModal
-        visible={visibleEditModal}
-        onCancel={() => {
-          setEditModalAirport(undefined);
-          setVisibleEditModal(false);
-        }}
-        onOk={onEditAirport}
-        initialValues={editModalAirport}
-        cities={cities}
-      />
+      {visibleEditModal && (
+        <AirportEditModal
+          visible={visibleEditModal}
+          onCancel={() => {
+            setEditModalAirport(undefined);
+            setVisibleEditModal(false);
+          }}
+          onOk={onEditAirport}
+          initialValues={editModalAirport}
+          cities={cities}
+        />
+      )}
 
-      <CreateAirportModal
-        visible={visibleCreateModal}
-        onCancel={() => setVisibleCreateModal(false)}
-        onOk={handleCreateAirport}
-        cities={cities}
-      />
-      <AirportFlightDetailModal
-        visible={visibleFlightModal}
-        onCancel={() => setVisibleFlightModal(false)}
-        airportId={editModalAirport?.id!}
-      />
+      {visibleCreateModal && (
+        <CreateAirportModal
+          visible={visibleCreateModal}
+          onCancel={() => setVisibleCreateModal(false)}
+          onOk={handleCreateAirport}
+          cities={cities}
+        />
+      )}
+      {visibleFlightModal && (
+        <AirportFlightDetailModal
+          visible={visibleFlightModal}
+          onCancel={() => setVisibleFlightModal(false)}
+          airportId={editModalAirport?.id!}
+          cities={cities}
+        />
+      )}
     </Fragment>
   );
 };

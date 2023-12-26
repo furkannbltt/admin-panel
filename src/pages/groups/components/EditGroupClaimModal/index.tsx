@@ -26,7 +26,6 @@ const EditGroupClaimModal: React.FC<EditGroupClaimModalProps> = ({
   const handleOk = () => {
     form.validateFields().then((values) => {
       onOk({ groupId: group.id, claimId: values.claims || [] }); // groupId'i nasıl alacağınıza bağlı olarak güncelleyebilirsiniz
-      form.resetFields();
     });
   };
 
@@ -42,8 +41,7 @@ const EditGroupClaimModal: React.FC<EditGroupClaimModalProps> = ({
       visible={visible}
       onOk={handleOk}
       onCancel={() => {
-        form.resetFields();
-        onCancel();
+          onCancel();
       }}
       okText="Kaydet"
       cancelText="İptal"

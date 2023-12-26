@@ -27,7 +27,6 @@ const VisitEditModal: React.FC<VisitEditModalProps> = ({
         });
       }}
       onCancel={() => {
-        form.resetFields();
         onCancel();
       }}
       okText="Kaydet"

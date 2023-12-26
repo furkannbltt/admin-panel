@@ -4,6 +4,7 @@ import { TerminalVoyage } from "../../types";
 import { DeleteOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
 import { displayedDateFormat } from "../../../../utils/helper";
+import { CityModel } from "../../../city/types";
 
 interface terminalVoyagesistTableProps {
   loading:boolean;
@@ -34,9 +35,20 @@ const FlightListTable: React.FC<terminalVoyagesistTableProps> = ({
       render: (date: string) => displayedDateFormat(date),
     },
     {
-      title: "Otobüs Kodu",
+      title: "Açıklama",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Sefer Saati",
       dataIndex: "busCode",
       key: "busCode",
+    },
+    {
+      title: "Hedef Şehir",
+      dataIndex: "targetCity",
+      key: "targetCity",
+      render: (targetCity: CityModel) => targetCity.name,
     },
     {
       title: "Seyahat Süresi",

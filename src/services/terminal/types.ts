@@ -1,3 +1,5 @@
+import { CityDBModel } from "../city/types";
+
 export interface TerminalDBModel {
   id: number;
   name: string;
@@ -14,6 +16,8 @@ export interface TerminalVoyageDBModel {
   isActive: boolean;
   travelTime: string;
   price: number;
+  description: string;
+  targetCity: CityDBModel;
 }
 
 export interface CreateTerminalDBModel {
@@ -31,5 +35,6 @@ export interface CreateTerminalVoyageDBModel {
   isActive: boolean;
   travelTime: string;
   price: number;
+  description: string;
+  cityId: number;
 }
-

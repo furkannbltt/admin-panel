@@ -12,16 +12,19 @@ import {
   editFlight,
   getListAirportFlights,
 } from "../../../../services/airport/airport";
+import { CityModel } from "../../../city/types";
 interface AirportFlightDetailModalProps {
   visible: boolean;
   onCancel: () => void;
   airportId: number;
+  cities: CityModel[];
 }
 
 const AirportFlightDetailModal: React.FC<AirportFlightDetailModalProps> = ({
   visible,
   onCancel,
   airportId,
+  cities,
 }) => {
   const [flights, setFlights] = useState<AirportFlight[]>([]);
   const [visibleEditModal, setVisibleEditModal] = useState(false);
@@ -84,7 +87,7 @@ const AirportFlightDetailModal: React.FC<AirportFlightDetailModalProps> = ({
       console.log(error);
     }
   };
-  const handleToggleIsActive = async(payload: AirportFlight) => {
+  const handleToggleIsActive = async (payload: AirportFlight) => {
     try {
       setIsLoading(true);
       await editFlight({ ...payload, isActive: !payload.isActive });
@@ -157,14 +160,18 @@ const AirportFlightDetailModal: React.FC<AirportFlightDetailModalProps> = ({
           }}
           onOk={onEditFlight}
           initialValues={editModalFlight}
+          cities={cities}
         />
       )}
 
-      <CreateFlightModal
-        visible={visibleCreateModal}
-        onCancel={() => setVisibleCreateModal(false)}
-        onOk={handleCreateFlight}
-      />
+      {visibleCreateModal && (
+        <CreateFlightModal
+          visible={visibleCreateModal}
+          cities={cities}
+          onCancel={() => setVisibleCreateModal(false)}
+          onOk={handleCreateFlight}
+        />
+      )}
     </Modal>
   );
 };

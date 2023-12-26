@@ -31,6 +31,8 @@ export const createActivity = (payload: CreateActivityDBModel) => {
   formData.append("isActive", payload.isActive.toString());
   formData.append("price", payload.price.toString());
   formData.append("cityId", payload.cityId.toString());
+  formData.append("inclusionServices", payload.inclusionServices.toString());
+  formData.append("exclusionServices", payload.exclusionServices.toString());
 
   payload.images.forEach((image) => {
     formData.append(`images`, image);

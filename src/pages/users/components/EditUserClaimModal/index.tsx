@@ -25,7 +25,6 @@ const EditUserClaimModal: React.FC<EditUserClaimModalProps> = ({
   const handleOk = () => {
     form.validateFields().then((values) => {
       onOk({ userId: user.id, claimId: values.claims || [] });
-      form.resetFields();
     });
   };
 
@@ -41,7 +40,6 @@ const EditUserClaimModal: React.FC<EditUserClaimModalProps> = ({
       visible={visible}
       onOk={handleOk}
       onCancel={() => {
-        form.resetFields();
         onCancel();
       }}
       okText="Kaydet"

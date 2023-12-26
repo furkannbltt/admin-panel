@@ -26,7 +26,6 @@ const EditGroupUsersModal: React.FC<EditGroupUsersModalProps> = ({
   const handleOk = () => {
     form.validateFields().then((values) => {
       onOk({ groupId: group.id, userId: values.users || [] }); // groupId'i nasıl alacağınıza bağlı olarak güncelleyebilirsiniz
-      form.resetFields();
     });
   };
 
@@ -42,7 +41,7 @@ const EditGroupUsersModal: React.FC<EditGroupUsersModalProps> = ({
       visible={visible}
       onOk={handleOk}
       onCancel={() => {
-        form.resetFields();
+
         onCancel();
       }}
       okText="Kaydet"

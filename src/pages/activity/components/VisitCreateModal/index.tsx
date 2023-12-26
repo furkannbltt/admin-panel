@@ -33,7 +33,6 @@ const CreateVisitModal: React.FC<CreateVisitModalProps> = ({
       visible={visible}
       onOk={handleOk}
       onCancel={() => {
-        form.resetFields();
         onCancel();
       }}
       okText="Kaydet"

@@ -100,6 +100,8 @@ const ActivityPage: React.FC = () => {
         price: payload.price,
         isActive: !payload.isActive,
         title: payload.title,
+        exclusionServices: payload.exclusionServices,
+        inclusionServices: payload.inclusionServices,
       };
       await updateActivity(updatePayload);
       const updatedActivities = activities.map((activity) =>
@@ -204,12 +206,14 @@ const ActivityPage: React.FC = () => {
         />
       )}
 
-      <CreateActivityModal
-        visible={visibleCreateModal}
-        cities={cities}
-        onCancel={() => setVisibleCreateModal(false)}
-        onOk={handleCreateActivity}
-      />
+      {visibleCreateModal && (
+        <CreateActivityModal
+          visible={visibleCreateModal}
+          cities={cities}
+          onCancel={() => setVisibleCreateModal(false)}
+          onOk={handleCreateActivity}
+        />
+      )}
 
       {selectedModalActivity && (
         <ImagesModal

@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, DatePicker, InputNumber } from "antd";
+import { Modal, Form, Input, DatePicker, InputNumber, Select } from "antd";
 import { CreateAirportFlightPayload } from "../../types";
 import locale from "antd/es/date-picker/locale/tr_TR";
 import { calculateTravelTime, sentDateFormat } from "../../../../utils/helper";
 import dayjs from "dayjs";
+import { CityModel } from "../../../city/types";
 
 interface CreateFlightModalProps {
   visible: boolean;
+  cities: CityModel[];
   onCancel: () => void;
   onOk: (newFlight: CreateAirportFlightPayload) => void;
 }
 
 const CreateFlightModal: React.FC<CreateFlightModalProps> = ({
   visible,
+  cities,
   onCancel,
   onOk,
 }) => {
@@ -28,7 +31,6 @@ const CreateFlightModal: React.FC<CreateFlightModalProps> = ({
         startDate: sentDateFormat(values.startDate.toString()),
       };
       onOk(payload);
-      form.resetFields();
       setTravelTime(undefined);
     } catch (error) {
       console.error("Validation failed:", error);
@@ -112,14 +114,43 @@ const CreateFlightModal: React.FC<CreateFlightModalProps> = ({
           />
         </Form.Item>
         <Form.Item
-          label="Uçak Kodu"
+          name="description"
+          label="Açıklama"
+          rules={[
+            {
+              required: true,
+              message: "Lütfen açıklama giriniz!",
+            },
+          ]}
+        >
+          <Input.TextArea />
+        </Form.Item>
+        <Form.Item
+          label="Sefer Saati"
           name="airplaneCode"
           rules={[{ required: true, message: "Bu alan zorunludur" }]}
         >
           <Input />
         </Form.Item>
-        <Form.Item label="Seyahat Süresi" name="travelTime">
-          <Input readOnly />
+        <Form.Item
+          label="Seyahat Süresi"
+          name="travelTime"
+          rules={[{ required: true, message: "Bu alan zorunludur" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="cityId"
+          label="Hedef Şehir"
+          rules={[{ required: true, message: "Lütfen bir şehir seçin" }]}
+        >
+          <Select placeholder="Hedef Şehir seçin">
+            {cities.map((city) => (
+              <Select.Option key={city.id} value={city.id}>
+                {city.name}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item
           label="Fiyat"

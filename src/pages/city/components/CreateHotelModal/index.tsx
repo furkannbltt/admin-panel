@@ -24,11 +24,9 @@ const CreateHotelModal: React.FC<CreateHotelModalProps> = ({
       onOk={() => {
         form.validateFields().then((values) => {
           onOk(values);
-          form.resetFields();
         });
       }}
       onCancel={() => {
-        form.resetFields();
         onCancel();
       }}
       okText="Ekle"

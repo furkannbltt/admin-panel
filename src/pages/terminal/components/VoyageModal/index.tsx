@@ -12,16 +12,19 @@ import {
   editTerminalVoyage,
   getListVoyageByTerminalId,
 } from "../../../../services/terminal/terminal";
+import { CityModel } from "../../../city/types";
 interface TerminalVoyageDetailModalProps {
   visible: boolean;
   onCancel: () => void;
   terminalId: number;
+  cities: CityModel[];
 }
 
 const TerminalVoyageDetailModal: React.FC<TerminalVoyageDetailModalProps> = ({
   visible,
   onCancel,
   terminalId,
+  cities
 }) => {
   const [voyages, setVoyages] = useState<TerminalVoyage[]>([]);
   const [visibleEditModal, setVisibleEditModal] = useState(false);
@@ -150,20 +153,23 @@ const TerminalVoyageDetailModal: React.FC<TerminalVoyageDetailModalProps> = ({
       {editModalVoyage && (
         <EditVoyageModal
           visible={visibleEditModal}
+          cities={cities}
           onCancel={() => {
             setEditModalVoyage(undefined);
             setVisibleEditModal(false);
           }}
           onOk={onEditVoyage}
           initialValues={editModalVoyage}
+          
         />
       )}
 
-      <CreateVoyageModal
+      {visibleCreateModal&&<CreateVoyageModal
         visible={visibleCreateModal}
+        cities={cities}
         onCancel={() => setVisibleCreateModal(false)}
         onOk={handleCreateVoyage}
-      />
+      />}
     </Modal>
   );
 };

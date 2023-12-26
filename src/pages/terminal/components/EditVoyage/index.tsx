@@ -1,24 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, DatePicker, InputNumber } from "antd";
+import React from "react";
+import { Modal, Form, Input, DatePicker, InputNumber, Select } from "antd";
 import dayjs from "dayjs";
-import { calculateTravelTime, sentDateFormat } from "../../../../utils/helper";
+import { sentDateFormat } from "../../../../utils/helper";
 import { TerminalVoyage } from "../../types";
+import { CityModel } from "../../../city/types";
 
 interface EditVoyageModalProps {
   visible: boolean;
   onCancel: () => void;
   onOk: (editedFlight: TerminalVoyage) => void;
   initialValues: TerminalVoyage;
+  cities: CityModel[];
 }
 
 const EditVoyageModal: React.FC<EditVoyageModalProps> = ({
   visible,
+  cities,
   onCancel,
   onOk,
   initialValues,
 }) => {
   const [form] = Form.useForm();
-  const [travelTime, setTravelTime] = useState<string | undefined>(undefined);
 
   const handleOk = async () => {
     try {
@@ -29,44 +31,8 @@ const EditVoyageModal: React.FC<EditVoyageModalProps> = ({
         startDate: sentDateFormat(values.startDate.toString()),
       };
       onOk({ ...initialValues, ...editedFlight });
-      form.resetFields();
     } catch (error) {
       console.error("Validation failed:", error);
-    }
-  };
-
-  const handleStartDateChange = (
-    date: dayjs.Dayjs | null,
-    dateString: string
-  ) => {
-    const endDate = form.getFieldValue("endDate");
-    if (date && endDate) {
-      const calculatedTravelTime = calculateTravelTime(
-        date,
-        endDate
-      ).toString();
-      setTravelTime(calculatedTravelTime);
-      form.setFieldsValue({ travelTime });
-    }
-  };
-
-  useEffect(() => {
-    form.setFieldsValue({ travelTime });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [travelTime]);
-
-  const handleEndDateChange = (
-    date: dayjs.Dayjs | null,
-    dateString: string
-  ) => {
-    const startDate = form.getFieldValue("startDate");
-    if (date && startDate) {
-      const calculatedTravelTime = calculateTravelTime(
-        startDate,
-        date
-      ).toString();
-      setTravelTime(calculatedTravelTime);
-      form.setFieldsValue({ travelTime });
     }
   };
 
@@ -100,7 +66,6 @@ const EditVoyageModal: React.FC<EditVoyageModalProps> = ({
             style={{
               width: "100%",
             }}
-            onChange={handleStartDateChange}
           />
         </Form.Item>
         <Form.Item
@@ -114,18 +79,46 @@ const EditVoyageModal: React.FC<EditVoyageModalProps> = ({
             style={{
               width: "100%",
             }}
-            onChange={handleEndDateChange}
           />
         </Form.Item>
         <Form.Item
-          label="Otobüs Kodu"
+          name="description"
+          label="Açıklama"
+          rules={[
+            {
+              required: true,
+              message: "Lütfen açıklama giriniz!",
+            },
+          ]}
+        >
+          <Input.TextArea />
+        </Form.Item>
+        <Form.Item
+          label="Sefer Saati"
           name="busCode"
-          rules={[{ required: true, message: "Uçak kodu zorunludur." }]}
+          rules={[{ required: true, message: "Sefer saati zorunludur." }]}
         >
           <Input />
         </Form.Item>
-        <Form.Item label="Seyahat Süresi" name="travelTime">
-          <Input readOnly />
+        <Form.Item
+          label="Seyahat Süresi"
+          name="travelTime"
+          rules={[{ required: true, message: "Bu alan zorunludur" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="cityId"
+          label="Hedef Şehir"
+          rules={[{ required: true, message: "Lütfen bir şehir seçin" }]}
+        >
+          <Select placeholder="Hedef Şehir seçin">
+            {cities.map((city) => (
+              <Select.Option key={city.id} value={city.id}>
+                {city.name}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item
           label="Fiyat"

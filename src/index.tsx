@@ -8,6 +8,7 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { ConfigProvider } from "antd";
 import  trTR  from 'antd/lib/locale/tr_TR';
+import 'react-quill/dist/quill.snow.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

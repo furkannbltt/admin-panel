@@ -27,7 +27,6 @@ const ProgramEditModal: React.FC<ProgramEditModalProps> = ({
         });
       }}
       onCancel={() => {
-        form.resetFields();
         onCancel();
       }}
       okText="Kaydet"

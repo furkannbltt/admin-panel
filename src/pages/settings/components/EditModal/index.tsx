@@ -23,7 +23,6 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
       visible={visible}
       onOk={() => form.submit()}
       onCancel={() => {
-        form.resetFields();
         onCancel();
       }}
       okText="Kaydet"

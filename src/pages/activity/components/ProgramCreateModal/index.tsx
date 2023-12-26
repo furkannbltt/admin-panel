@@ -33,7 +33,6 @@ const CreateProgramModal: React.FC<CreateProgramModalProps> = ({
       visible={visible}
       onOk={handleOk}
       onCancel={() => {
-        form.resetFields();
         onCancel();
       }}
       okText="Kaydet"

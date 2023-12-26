@@ -153,28 +153,35 @@ const TerminalPage: React.FC = () => {
         onViewTerminalDetails={onViewTerminalDetails}
       />
 
-      <TerminalEditModal
-        visible={visibleEditModal}
-        onCancel={() => {
-          setEditModalTerminal(undefined);
-          setVisibleEditModal(false);
-        }}
-        onOk={onEditTerminal}
-        initialValues={editModalTerminal}
-        cities={cities}
-      />
+      {visibleEditModal && (
+        <TerminalEditModal
+          visible={visibleEditModal}
+          onCancel={() => {
+            setEditModalTerminal(undefined);
+            setVisibleEditModal(false);
+          }}
+          onOk={onEditTerminal}
+          initialValues={editModalTerminal}
+          cities={cities}
+        />
+      )}
 
-      <CreateTerminalModal
-        visible={visibleCreateModal}
-        onCancel={() => setVisibleCreateModal(false)}
-        onOk={handleCreateTerminal}
-        cities={cities}
-      />
-      <TerminalVoyageDetailModal
-        visible={visibleFlightModal}
-        onCancel={() => setVisibleFlightModal(false)}
-        terminalId={editModalTerminal?.id!}
-      />
+      {visibleCreateModal && (
+        <CreateTerminalModal
+          visible={visibleCreateModal}
+          onCancel={() => setVisibleCreateModal(false)}
+          onOk={handleCreateTerminal}
+          cities={cities}
+        />
+      )}
+      {visibleFlightModal && (
+        <TerminalVoyageDetailModal
+          visible={visibleFlightModal}
+          onCancel={() => setVisibleFlightModal(false)}
+          terminalId={editModalTerminal?.id!}
+          cities={cities}
+        />
+      )}
     </Fragment>
   );
 };

@@ -101,18 +101,22 @@ const SettingsPage: React.FC = () => {
 
           <NotificationListTable notifications={notificationList} />
         </div>
-        <EditProfileModal
-          visible={editProfileVisible}
-          onCancel={() => setEditProfileVisible(false)}
-          onOk={handleEditProfileOk}
-          initialValues={userInfo}
-        />
+        {editProfileVisible && (
+          <EditProfileModal
+            visible={editProfileVisible}
+            onCancel={() => setEditProfileVisible(false)}
+            onOk={handleEditProfileOk}
+            initialValues={userInfo}
+          />
+        )}
 
-        <ChangePasswordModal
-          visible={changePasswordVisible}
-          onCancel={() => setChangePasswordVisible(false)}
-          onOk={handleChangePasswordOk}
-        />
+        {changePasswordVisible && (
+          <ChangePasswordModal
+            visible={changePasswordVisible}
+            onCancel={() => setChangePasswordVisible(false)}
+            onOk={handleChangePasswordOk}
+          />
+        )}
       </div>
     </Fragment>
   );

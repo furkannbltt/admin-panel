@@ -30,7 +30,6 @@ const AirportEditModal: React.FC<AirportEditModalProps> = ({
       setLoading(true);
       const values = await form.validateFields();
       onOk({ ...initialValues, ...values } as Airport);
-      form.resetFields();
       setLoading(false);
     } catch (error) {
       console.error("Validation failed:", error);
@@ -49,17 +48,17 @@ const AirportEditModal: React.FC<AirportEditModalProps> = ({
       <Form form={form} layout="vertical">
         <Form.Item
           name="name"
-          label="Name"
-          rules={[{ required: true, message: "Please enter the airport name" }]}
+          label="İsim"
+          rules={[{ required: true, message: "Bu alan zorunludur!" }]}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
           name="description"
-          label="Description"
+          label="Açıklama"
           rules={[
-            { required: true, message: "Please enter the airport description" },
+            { required: true, message: "Bu alan zorunludur!" },
           ]}
         >
           <Input.TextArea />
@@ -67,10 +66,10 @@ const AirportEditModal: React.FC<AirportEditModalProps> = ({
 
         <Form.Item
           name="cityId"
-          label="City"
-          rules={[{ required: true, message: "Please select the city" }]}
+          label="Şehir"
+          rules={[{ required: true, message: "Bu alan zorunludur!" }]}
         >
-          <Select placeholder="Select a city">
+          <Select placeholder="Şehir seçin">
             {cities.map((city) => (
               <Select.Option key={city.id} value={city.id}>
                 {city.name}

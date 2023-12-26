@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Modal, Form, Input, InputNumber, Select } from "antd";
 import { ActivityModel, UpdateActivityModel } from "../../types";
 import { CityModel } from "../../../city/types";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 interface ActivityEditModalProps {
   visible: boolean;
   onCancel: () => void;
   onOk: (values: UpdateActivityModel) => void;
-  initialValues?: ActivityModel;
+  initialValues: ActivityModel;
   cities: CityModel[];
 }
 
@@ -19,6 +21,20 @@ const ActivityEditModal: React.FC<ActivityEditModalProps> = ({
   cities,
 }) => {
   const [form] = Form.useForm();
+  const inclusionServicesRef = useRef<ReactQuill>(null);
+  const exclusionServicesRef = useRef<ReactQuill>(null);
+
+  useEffect(() => {
+    // `initialValues` değiştiğinde, ReactQuill değerlerini set et
+    if (inclusionServicesRef.current) {
+      inclusionServicesRef.current.getEditor().root.innerHTML =
+        initialValues.inclusionServices || "";
+    }
+    if (exclusionServicesRef.current) {
+      exclusionServicesRef.current.getEditor().root.innerHTML =
+        initialValues.exclusionServices || "";
+    }
+  }, [initialValues]);
 
   return (
     <Modal
@@ -30,7 +46,6 @@ const ActivityEditModal: React.FC<ActivityEditModalProps> = ({
         });
       }}
       onCancel={() => {
-        form.resetFields();
         onCancel();
       }}
       okText="Kaydet"
@@ -40,7 +55,10 @@ const ActivityEditModal: React.FC<ActivityEditModalProps> = ({
         form={form}
         layout="vertical"
         name="activity_form"
-        initialValues={{ ...initialValues, cityId: initialValues?.city.id }}
+        initialValues={{
+          ...initialValues,
+          cityId: initialValues?.city.id,
+        }}
       >
         <Form.Item
           name="cityId"
@@ -90,6 +108,36 @@ const ActivityEditModal: React.FC<ActivityEditModalProps> = ({
           ]}
         >
           <Input.TextArea />
+        </Form.Item>
+        <Form.Item
+          name="inclusionServices"
+          label="Dahil olan servisler."
+          rules={[
+            {
+              required: true,
+              message: "Zorunlu alandır!",
+            },
+          ]}
+        >
+          <ReactQuill
+            ref={inclusionServicesRef}
+            placeholder="Metin giriniz"
+          />
+        </Form.Item>
+        <Form.Item
+          name="exclusionServices"
+          label="Dahil olmayan servisler."
+          rules={[
+            {
+              required: true,
+              message: "Zorunlu alandır!",
+            },
+          ]}
+        >
+          <ReactQuill
+            ref={exclusionServicesRef}
+            placeholder="Metin giriniz"
+          />
         </Form.Item>
         <Form.Item
           name="price"

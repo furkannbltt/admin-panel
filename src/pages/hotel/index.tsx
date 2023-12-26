@@ -212,18 +212,22 @@ const HotelPage: React.FC = () => {
         onViewImages={showImagesModal}
       />
 
-      <CreateHotelModal
-        visible={createModalVisible}
-        onCancel={handleCreateCancel}
-        onOk={handleCreateOk}
-      />
+      {createModalVisible && (
+        <CreateHotelModal
+          visible={createModalVisible}
+          onCancel={handleCreateCancel}
+          onOk={handleCreateOk}
+        />
+      )}
 
-      <EditHotelModal
-        visible={editModalVisible}
-        onCancel={handleEditCancel}
-        onOk={handleEditOk}
-        initialValues={selectedHotel}
-      />
+      {editModalVisible && (
+        <EditHotelModal
+          visible={editModalVisible}
+          onCancel={handleEditCancel}
+          onOk={handleEditOk}
+          initialValues={selectedHotel}
+        />
+      )}
 
       {selectedHotel && (
         <ImagesModal

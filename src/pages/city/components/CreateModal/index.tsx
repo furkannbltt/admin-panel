@@ -19,11 +19,9 @@ const CityCreateModal: React.FC<CityCreateModalProps> = ({ visible, onCancel, on
       onOk={() => {
         form.validateFields().then((values) => {
           onOk({ isActive:true, ...values });
-          form.resetFields();
         });
       }}
       onCancel={() => {
-        form.resetFields();
         onCancel();
       }}
       okText="Oluştur"

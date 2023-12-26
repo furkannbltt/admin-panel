@@ -18,11 +18,9 @@ const GroupCreateModal: React.FC<GroupCreateModalProps> = ({ visible, onCancel, 
       onOk={() => {
         form.validateFields().then((values) => {
           onOk(values);
-          form.resetFields();
         });
       }}
       onCancel={() => {
-        form.resetFields();
         onCancel();
       }}
       okText="Oluştur"

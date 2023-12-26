@@ -8,11 +8,7 @@ import CityCreateModal from "./components/CreateModal";
 import { useNavigate } from "react-router-dom";
 import { PlusOutlined } from "@ant-design/icons";
 import { CityModel, CreateCityModel, CreateHotelModel } from "./types";
-import {
-  createCity,
-  deleteCity,
-  editCity,
-} from "../../services/city/city";
+import { createCity, deleteCity, editCity } from "../../services/city/city";
 import { getCities } from "./../../services/city/city";
 import { createCityHotel } from "../../services/hotel/hotel";
 
@@ -155,27 +151,33 @@ const CityPage: React.FC = () => {
         onToggleIsActive={handleToggleIsActive}
       />
 
-      <CityEditModal
-        visible={visibleEditModal}
-        onCancel={() => {
-          setSelectedModalCity(undefined);
-          setVisibleEditModal(false);
-        }}
-        onOk={onCityEdit}
-        initialValues={selectedModalCity}
-      />
+      {visibleEditModal && (
+        <CityEditModal
+          visible={visibleEditModal}
+          onCancel={() => {
+            setSelectedModalCity(undefined);
+            setVisibleEditModal(false);
+          }}
+          onOk={onCityEdit}
+          initialValues={selectedModalCity}
+        />
+      )}
 
-      <CreateHotelModal
-        visible={visibleCreateHotelModal}
-        onCancel={() => setVisibleCreateHotelModal(false)}
-        onOk={onCreateHotel}
-      />
+      {visibleCreateHotelModal && (
+        <CreateHotelModal
+          visible={visibleCreateHotelModal}
+          onCancel={() => setVisibleCreateHotelModal(false)}
+          onOk={onCreateHotel}
+        />
+      )}
 
-      <CityCreateModal
-        visible={visibleCreateModal}
-        onCancel={() => setVisibleCreateModal(false)}
-        onOk={handleCreateCity}
-      />
+      {visibleCreateModal && (
+        <CityCreateModal
+          visible={visibleCreateModal}
+          onCancel={() => setVisibleCreateModal(false)}
+          onOk={handleCreateCity}
+        />
+      )}
     </Fragment>
   );
 };

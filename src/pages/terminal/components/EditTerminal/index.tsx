@@ -30,7 +30,6 @@ const TerminalEditModal: React.FC<TerminalEditModalProps> = ({
       setLoading(true);
       const values = await form.validateFields();
       onOk({ ...initialValues, ...values } as Terminal);
-      form.resetFields();
       setLoading(false);
     } catch (error) {
       console.error("Validation failed:", error);
@@ -49,9 +48,9 @@ const TerminalEditModal: React.FC<TerminalEditModalProps> = ({
       <Form form={form} layout="vertical">
         <Form.Item
           name="name"
-          label="Name"
+          label="İsim"
           rules={[
-            { required: true, message: "Please enter the Terminal name" },
+            { required: true, message: "Bu alan zorunludur!" },
           ]}
         >
           <Input />
@@ -59,11 +58,11 @@ const TerminalEditModal: React.FC<TerminalEditModalProps> = ({
 
         <Form.Item
           name="description"
-          label="Description"
+          label="Açıklama"
           rules={[
             {
               required: true,
-              message: "Please enter the Terminal description",
+              message: "Bu alan zorunludur!",
             },
           ]}
         >
@@ -72,10 +71,10 @@ const TerminalEditModal: React.FC<TerminalEditModalProps> = ({
 
         <Form.Item
           name="cityId"
-          label="City"
-          rules={[{ required: true, message: "Please select the city" }]}
+          label="Şehir"
+          rules={[{ required: true, message: "Bu alan zorunludur!" }]}
         >
-          <Select placeholder="Select a city">
+          <Select placeholder="Şehir seçin">
             {cities.map((city) => (
               <Select.Option key={city.id} value={city.id}>
                 {city.name}
