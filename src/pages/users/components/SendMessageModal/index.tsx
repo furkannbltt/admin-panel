@@ -24,7 +24,7 @@ const SendMessageModal: React.FC<SendMessageModalProps> = ({
       visible={visible}
       onOk={() => {
         form.validateFields().then((values) => {
-          onOk({...values, userId:user.id,url:""});
+          onOk({ ...values, userId: user.id.toString(), url: "" });
         });
       }}
       onCancel={() => {
