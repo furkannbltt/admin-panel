@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Table, Button, Tooltip, Space, Popconfirm } from "antd";
-import { DeleteOutlined, SendOutlined } from "@ant-design/icons";
+import { DeleteOutlined, HomeOutlined, SendOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
 import { UserModel } from "../../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLockOpen } from "@fortawesome/free-solid-svg-icons";
-
+import { AuthContext } from "../../../../context/Auth";
+import "./style.scss";
 interface UserListTableProps {
   isLoading: boolean;
   users: UserModel[];
@@ -21,11 +22,21 @@ const UserListTable: React.FC<UserListTableProps> = ({
   onDeleteUser,
   onSendMessage,
 }) => {
+  const { userInfo } = useContext(AuthContext);
+
   const columns: ColumnsType<UserModel> = [
     {
       title: "Ad",
       dataIndex: "name",
       key: "name",
+      render: (text, record) =>
+        record.id === userInfo.id ? (
+          <span>
+            <HomeOutlined /> {text}
+          </span>
+        ) : (
+          text
+        ),
     },
     {
       title: "İşlemler",
@@ -39,13 +50,6 @@ const UserListTable: React.FC<UserListTableProps> = ({
               onClick={() => onEditUser(record)}
             />
           </Tooltip>
-          <Tooltip title="Mesaj gönder">
-            <Button
-              type="default"
-              icon={<SendOutlined />}
-              onClick={() => onSendMessage(record)}
-            />
-          </Tooltip>
           <Tooltip title="Sil">
             <Popconfirm
               title="Silmek istediğinizden emin misiniz?"
@@ -56,12 +60,32 @@ const UserListTable: React.FC<UserListTableProps> = ({
               <Button type="default" danger icon={<DeleteOutlined />} />
             </Popconfirm>
           </Tooltip>
+          {record.id !== userInfo.id && (
+            <Tooltip title="Mesaj gönder">
+              <Button
+                type="default"
+                icon={<SendOutlined />}
+                onClick={() => onSendMessage(record)}
+              />
+            </Tooltip>
+          )}
         </Space>
       ),
     },
   ];
 
-  return <Table loading={isLoading} dataSource={users} columns={columns} />;
+  const rowClassName = (record: UserModel) => {
+    return record.id === userInfo.id ? "even-row-class" : "";
+  };
+
+  return (
+    <Table
+      loading={isLoading}
+      dataSource={users}
+      columns={columns}
+      rowClassName={rowClassName}
+    />
+  );
 };
 
 export default UserListTable;
