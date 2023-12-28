@@ -10,6 +10,12 @@ export interface UpdateUserDBModel {
   name: string;
 }
 
+export interface SendNotificaitonDBModel {
+  userId: string;
+  message: string;
+  url: string;
+  title: string;
+}
 export interface ChangePasswordDBModel {
   oldPassword: string;
   newPassword: string;

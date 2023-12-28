@@ -1,6 +1,6 @@
 import { Fragment, useCallback, useContext, useEffect, useState } from "react";
 import { BellOutlined } from "@ant-design/icons";
-import { Modal, Badge, Button } from "antd";
+import { Modal, Badge, Button, Empty } from "antd";
 import * as signalR from "@microsoft/signalr";
 import getUser from "../../utils/storageHelper";
 import { toast } from "react-toastify";
@@ -175,15 +175,19 @@ const NotificationComponent = () => {
         }}
         width={500}
       >
-        {notificationList.map((notification: NotificationModel) => (
-          <NotificationItem
-            loading={loading}
-            key={notification.id}
-            data={notification}
-            onDelete={deleteNotification}
-            onRead={markNotificationAsRead}
-          />
-        ))}
+        {notificationList.length ? (
+          notificationList.map((notification: NotificationModel) => (
+            <NotificationItem
+              loading={loading}
+              key={notification.id}
+              data={notification}
+              onDelete={deleteNotification}
+              onRead={markNotificationAsRead}
+            />
+          ))
+        ) : (
+          <Empty />
+        )}
       </Modal>
     </Fragment>
   );

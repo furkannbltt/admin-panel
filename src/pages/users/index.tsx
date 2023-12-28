@@ -2,13 +2,14 @@ import React, { useState, useEffect, Fragment } from "react";
 import UserListTable from "./components/UserListTable";
 import EditUserClaimModal from "./components/EditUserClaimModal";
 import ContentHeader from "../../components/ContentHeader";
-import { UpdateUserClaimsModel, ClaimModel, UserModel } from "./types";
-import { deleteUser, getUsers } from "../../services/users/users";
+import { UpdateUserClaimsModel, ClaimModel, UserModel, SendNotificaitonModel } from "./types";
+import { deleteUser, getUsers, sendNotification } from "../../services/users/users";
 import {
   getClaims,
   getClaimsInTheUserQuery,
   updateUserClaims,
 } from "../../services/claims/claims";
+import SendMessageModal from "./components/SendMessageModal";
 
 const UsersPage: React.FC = () => {
   const [users, setUsers] = useState<UserModel[]>([]);
@@ -16,6 +17,7 @@ const UsersPage: React.FC = () => {
   const [userClaims, setUserClaims] = useState<ClaimModel[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [visibleEditModal, setVisibleEditModal] = useState(false);
+  const [messageModal, setMessageModal] = useState(false);
   const [selectedModalUser, setSelectedModalUser] = useState<
     UserModel | undefined
   >(undefined);
@@ -59,6 +61,11 @@ const UsersPage: React.FC = () => {
     setVisibleEditModal(true);
   };
 
+  const handleSendMessage = async (editedUser: UserModel) => {
+    setSelectedModalUser(editedUser);
+    setMessageModal(true);
+  };
+
   const handleDeleteUser = async (userId: number) => {
     try {
       setIsLoading(true);
@@ -83,6 +90,16 @@ const UsersPage: React.FC = () => {
     }
   };
 
+  const onSendMessage = async (payload: SendNotificaitonModel) => {
+    try {
+      await sendNotification(payload);
+      setSelectedModalUser(undefined);
+      setMessageModal(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     const handleLoadComponent = async () => {
       await fetchUsers();
@@ -99,6 +116,7 @@ const UsersPage: React.FC = () => {
         users={users}
         onEditUserClaims={handleEditUserClaim}
         onDeleteUser={handleDeleteUser}
+        onSendMessage={handleSendMessage}
       />
 
       {selectedModalUser && (
@@ -111,6 +129,18 @@ const UsersPage: React.FC = () => {
             setVisibleEditModal(false);
           }}
           onOk={onUserClaims}
+          user={selectedModalUser}
+        />
+      )}
+
+      {selectedModalUser && (
+        <SendMessageModal
+          visible={messageModal}
+          onCancel={() => {
+            setSelectedModalUser(undefined);
+            setMessageModal(false);
+          }}
+          onOk={onSendMessage}
           user={selectedModalUser}
         />
       )}

@@ -25,6 +25,13 @@ export interface UpdateUserClaimsModel {
   claimId: number[];
 }
 
+export interface SendNotificaitonModel {
+  userId: string;
+  message: string;
+  url: string;
+  title: string;
+}
+
 export interface DeleteUserClaimModel {
   userId: number;
   claimId: number;

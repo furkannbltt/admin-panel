@@ -1,4 +1,4 @@
-import { UserDBModel, UpdateUserDBModel, ChangePasswordDBModel } from "./types";
+import { UserDBModel, UpdateUserDBModel, ChangePasswordDBModel, SendNotificaitonDBModel } from "./types";
 import http from "../../utils/http";
 import { BaseResponseModel } from "../../models/models";
 
@@ -24,6 +24,13 @@ export const editUser = (payload: UpdateUserDBModel) => {
 export const editAdminUser = (payload: UpdateUserDBModel) => {
   return http.put<any, BaseResponseModel<UserDBModel>>(
     "/users/adminUserUpdate",
+    payload
+  );
+};
+
+export const sendNotification = (payload: SendNotificaitonDBModel) => {
+  return http.post<any,string >(
+    "/users/sendNotification",
     payload
   );
 };

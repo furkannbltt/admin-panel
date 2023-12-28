@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Form, Input, Button, Checkbox, Typography } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import "./style.scss";
@@ -9,15 +9,22 @@ import { useNavigate } from "react-router-dom";
 
 const LoginPage: React.FC = () => {
   const { setUserInfo } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const onFinish = async (values: { email: string; password: string }) => {
-    await login(values.email, values.password).then((response) => {
-      if (response?.data) {
+    try {
+      setLoading(true);
+      const response = await login(values.email, values.password);
+      if (response.data) {
         setUser(response.data);
         setUserInfo(response.data);
         navigate("/activity");
       }
-    });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleRegisterClick = () => {
@@ -67,7 +74,12 @@ const LoginPage: React.FC = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" className="login-button">
+            <Button
+              loading={loading}
+              type="primary"
+              htmlType="submit"
+              className="login-button"
+            >
               Giriş Yap
             </Button>
           </Form.Item>

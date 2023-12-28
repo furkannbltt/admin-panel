@@ -1,6 +1,6 @@
 import React from "react";
 import { Table, Button, Tooltip, Space, Popconfirm } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, SendOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
 import { UserModel } from "../../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +11,7 @@ interface UserListTableProps {
   users: UserModel[];
   onEditUserClaims: (user: UserModel) => void;
   onDeleteUser: (userId: number) => void;
+  onSendMessage: (user: UserModel) => void;
 }
 
 const UserListTable: React.FC<UserListTableProps> = ({
@@ -18,6 +19,7 @@ const UserListTable: React.FC<UserListTableProps> = ({
   users,
   onEditUserClaims: onEditUser,
   onDeleteUser,
+  onSendMessage,
 }) => {
   const columns: ColumnsType<UserModel> = [
     {
@@ -35,6 +37,13 @@ const UserListTable: React.FC<UserListTableProps> = ({
               type="default"
               icon={<FontAwesomeIcon icon={faLockOpen} />}
               onClick={() => onEditUser(record)}
+            />
+          </Tooltip>
+          <Tooltip title="Mesaj gönder">
+            <Button
+              type="default"
+              icon={<SendOutlined />}
+              onClick={() => onSendMessage(record)}
             />
           </Tooltip>
           <Tooltip title="Sil">

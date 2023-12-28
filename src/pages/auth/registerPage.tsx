@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const onFinish = async (values: {
     name: string;
@@ -15,7 +16,6 @@ const RegisterPage: React.FC = () => {
     password: string;
     confirmPassword: string;
   }) => {
-    // Şifre validasyon kuralları
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
     if (values.password !== values.confirmPassword) {
       setPasswordError("Şifreler eşleşmiyor. Lütfen tekrar deneyin.");
@@ -31,7 +31,17 @@ const RegisterPage: React.FC = () => {
 
     setPasswordError(null);
 
-    await register(values.name, values.email, values.password);
+    try {
+      setLoading(true);
+      await register(values.name, values.email, values.password);
+
+      navigate("/activity");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+
     navigate("/login");
   };
 
@@ -122,6 +132,7 @@ const RegisterPage: React.FC = () => {
               type="primary"
               htmlType="submit"
               className="register-button"
+              loading={loading}
             >
               Kayıt Ol
             </Button>
