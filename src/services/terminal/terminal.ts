@@ -8,7 +8,7 @@ import http from "../../utils/http";
 import { BaseResponseModel } from "../../models/models";
 
 export const getTerminals = () => {
-  return http.get<any, TerminalDBModel[]>(`/terminal/getListByCityId/218`);
+  return http.get<any, TerminalDBModel[]>(`/terminal/getListByCityId/0`);
 };
 
 export const getListVoyageByTerminalId = (terminalId: number) => {
