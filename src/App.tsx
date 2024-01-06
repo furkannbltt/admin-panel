@@ -29,7 +29,7 @@ const App: React.FC = () => {
           <Route
             path="/activity"
             element={
-              <PrivateRoute permissions={[PermissonsType.Activity]}>
+              <PrivateRoute permissions={[PermissonsType.Activity,PermissonsType.Admin]}>
                 <ActivityPage/>
               </PrivateRoute>
             }
@@ -37,7 +37,7 @@ const App: React.FC = () => {
           <Route
             path="/user"
             element={
-              <PrivateRoute permissions={[PermissonsType.Users]}>
+              <PrivateRoute permissions={[PermissonsType.Users,PermissonsType.Admin]}>
                 <UsersPage />
               </PrivateRoute>
             }
@@ -45,7 +45,7 @@ const App: React.FC = () => {
           <Route
             path="/city"
             element={
-              <PrivateRoute permissions={[PermissonsType.City]}>
+              <PrivateRoute permissions={[PermissonsType.City,PermissonsType.Admin]}>
                 <CityPage />
               </PrivateRoute>
             }
@@ -53,7 +53,7 @@ const App: React.FC = () => {
           <Route
             path="/hotel"
             element={
-              <PrivateRoute permissions={[PermissonsType.Hotel]}>
+              <PrivateRoute permissions={[PermissonsType.Hotel,PermissonsType.Admin]}>
                 <HotelPage />
               </PrivateRoute>
             }
@@ -61,7 +61,7 @@ const App: React.FC = () => {
           <Route
             path="/hotel/:cityName/:cityId"
             element={
-              <PrivateRoute permissions={[PermissonsType.Hotel]}>
+              <PrivateRoute permissions={[PermissonsType.Hotel,PermissonsType.Admin]}>
                 <HotelPage />
               </PrivateRoute>
             }
@@ -70,7 +70,7 @@ const App: React.FC = () => {
           <Route
             path="/airport"
             element={
-              <PrivateRoute permissions={[PermissonsType.Airport]}>
+              <PrivateRoute permissions={[PermissonsType.Airport,PermissonsType.Admin]}>
                 <AirportPage />
               </PrivateRoute>
             }
@@ -79,7 +79,7 @@ const App: React.FC = () => {
           <Route
             path="/terminal"
             element={
-              <PrivateRoute permissions={[PermissonsType.Terminal]}>
+              <PrivateRoute permissions={[PermissonsType.Terminal,PermissonsType.Admin]}>
                 <TerminalPage />
               </PrivateRoute>
             }
@@ -88,7 +88,7 @@ const App: React.FC = () => {
           <Route
             path="/group"
             element={
-              <PrivateRoute permissions={[PermissonsType.Group]}>
+              <PrivateRoute permissions={[PermissonsType.Group,PermissonsType.Admin]}>
                 <GroupsPage />
               </PrivateRoute>
             }

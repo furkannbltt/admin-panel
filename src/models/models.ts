@@ -12,4 +12,5 @@ export enum PermissonsType {
   Terminal = "Terminaller Sayfası",
   Group = "Gruplar Sayfası",
   Users = "Kullanıcılar Sayfası",
+  Admin = "Admin"
 }
