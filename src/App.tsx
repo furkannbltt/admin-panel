@@ -17,6 +17,8 @@ import SettingsPage from "./pages/settings";
 import { PermissonsType } from "./models/models";
 import RegisterPage from "./pages/auth/registerPage";
 import ActivityPage from "./pages/activity";
+import NotPage from "./pages/resultPages/NotPage";
+import ErrorPage from "./pages/resultPages/ErrorPage";
 
 const App: React.FC = () => {
   return (
@@ -29,15 +31,19 @@ const App: React.FC = () => {
           <Route
             path="/activity"
             element={
-              <PrivateRoute permissions={[PermissonsType.Activity,PermissonsType.Admin]}>
-                <ActivityPage/>
+              <PrivateRoute
+                permissions={[PermissonsType.Activity, PermissonsType.Admin]}
+              >
+                <ActivityPage />
               </PrivateRoute>
             }
           />
           <Route
             path="/user"
             element={
-              <PrivateRoute permissions={[PermissonsType.Users,PermissonsType.Admin]}>
+              <PrivateRoute
+                permissions={[PermissonsType.Users, PermissonsType.Admin]}
+              >
                 <UsersPage />
               </PrivateRoute>
             }
@@ -45,7 +51,9 @@ const App: React.FC = () => {
           <Route
             path="/city"
             element={
-              <PrivateRoute permissions={[PermissonsType.City,PermissonsType.Admin]}>
+              <PrivateRoute
+                permissions={[PermissonsType.City, PermissonsType.Admin]}
+              >
                 <CityPage />
               </PrivateRoute>
             }
@@ -53,7 +61,9 @@ const App: React.FC = () => {
           <Route
             path="/hotel"
             element={
-              <PrivateRoute permissions={[PermissonsType.Hotel,PermissonsType.Admin]}>
+              <PrivateRoute
+                permissions={[PermissonsType.Hotel, PermissonsType.Admin]}
+              >
                 <HotelPage />
               </PrivateRoute>
             }
@@ -61,7 +71,9 @@ const App: React.FC = () => {
           <Route
             path="/hotel/:cityName/:cityId"
             element={
-              <PrivateRoute permissions={[PermissonsType.Hotel,PermissonsType.Admin]}>
+              <PrivateRoute
+                permissions={[PermissonsType.Hotel, PermissonsType.Admin]}
+              >
                 <HotelPage />
               </PrivateRoute>
             }
@@ -70,7 +82,9 @@ const App: React.FC = () => {
           <Route
             path="/airport"
             element={
-              <PrivateRoute permissions={[PermissonsType.Airport,PermissonsType.Admin]}>
+              <PrivateRoute
+                permissions={[PermissonsType.Airport, PermissonsType.Admin]}
+              >
                 <AirportPage />
               </PrivateRoute>
             }
@@ -79,7 +93,9 @@ const App: React.FC = () => {
           <Route
             path="/terminal"
             element={
-              <PrivateRoute permissions={[PermissonsType.Terminal,PermissonsType.Admin]}>
+              <PrivateRoute
+                permissions={[PermissonsType.Terminal, PermissonsType.Admin]}
+              >
                 <TerminalPage />
               </PrivateRoute>
             }
@@ -88,7 +104,9 @@ const App: React.FC = () => {
           <Route
             path="/group"
             element={
-              <PrivateRoute permissions={[PermissonsType.Group,PermissonsType.Admin]}>
+              <PrivateRoute
+                permissions={[PermissonsType.Group, PermissonsType.Admin]}
+              >
                 <GroupsPage />
               </PrivateRoute>
             }
@@ -102,6 +120,9 @@ const App: React.FC = () => {
               </PrivateRoute>
             }
           />
+
+          <Route path="/error" element={<ErrorPage />} />
+          <Route path="*" element={<NotPage />} />
         </Routes>
       </Router>
     </div>

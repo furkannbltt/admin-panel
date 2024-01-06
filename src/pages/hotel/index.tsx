@@ -36,6 +36,8 @@ const HotelPage: React.FC = () => {
       setCities(response);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 

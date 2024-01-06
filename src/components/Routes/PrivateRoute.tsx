@@ -3,8 +3,8 @@ import { Navigate } from "react-router-dom";
 import { AuthContext } from "../../context/Auth";
 import { ClaimModel } from "../../pages/users/types";
 import LoadingPage from "../LoadingPage";
-import { toast } from "react-toastify";
 import Layout from "../Layout";
+import NotAccessPage from "../../pages/resultPages/NotAccessPage";
 
 interface IRouteProps {
   children: ReactNode;
@@ -30,10 +30,9 @@ const PrivateRoute: FC<IRouteProps> = ({ children, permissions }) => {
     ) {
       return <Layout>{children}</Layout>;
     } else {
-      toast.error("Bu sayfa için izin bulunamadı.");
       return (
         <Layout>
-          <></>
+          <NotAccessPage />;
         </Layout>
       );
     }

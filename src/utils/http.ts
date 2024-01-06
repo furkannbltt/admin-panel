@@ -50,26 +50,15 @@ http.interceptors.response.use(
     if (error.response.status === 401) {
       toast.error("Oturumun Süresi Dolmuştur");
       setTimeout(() => {
-        removeUser()
+        removeUser();
         window.location.href = "/login";
-        
       }, 2000);
+    } else {
+      window.location.href = "/error";
+      return Promise.reject(error.response?.data);
     }
     toast.error(error.response?.data.Message);
     toast.error(error.response?.data.message);
-
-    // if (error.response?.data && error.response.data.error) {
-    //   if (error.response.data.error.details) {
-    //     return Promise.reject(
-    //       error.response.data.error.message +
-    //         " " +
-    //         error.response.data.error.details
-    //     );
-    //   } else {
-    //     return Promise.reject(error.response.data.error.message);
-    //   }
-    // }
-    // return Promise.reject(error.response?.data);
   }
 );
 
