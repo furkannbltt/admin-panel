@@ -54,8 +54,11 @@ http.interceptors.response.use(
         window.location.href = "/login";
       }, 2000);
     } else {
-      window.location.href = "/error";
-      return Promise.reject(error.response?.data);
+      if(error.response.status === 500){
+        window.location.href = "/error";
+        return Promise.reject(error.response?.data);
+      }
+      
     }
     toast.error(error.response?.data.Message);
     toast.error(error.response?.data.message);
