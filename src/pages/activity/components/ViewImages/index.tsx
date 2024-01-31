@@ -29,7 +29,7 @@ const ImagesModal: React.FC<ImagesModalProps> = ({
       uid: image.id.toString(),
       name: image.id.toString(),
       status: "done",
-      url: `${process.env.CDN_FILE_BASE_URL}${image.imageUrl}`,
+      url: `${process.env.REACT_APP_CDN_URL}${image.imageUrl}`,
     }));
   };
 
@@ -59,7 +59,7 @@ const ImagesModal: React.FC<ImagesModalProps> = ({
             uid: addedImage.id.toString(),
             name: addedImage.id.toString(),
             status: "done",
-            url: `${process.env.CDN_FILE_BASE_URL}${addedImage.imageUrl}`,
+            url: `${process.env.REACT_APP_CDN_URL}${addedImage.imageUrl}`,
           },
         ]);
       });
