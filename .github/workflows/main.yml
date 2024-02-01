@@ -22,7 +22,7 @@ jobs:
     - name: Build and Push Docker Image to Amazon ECR
       env:
         AWS_DEFAULT_REGION: us-west-2
-        DOCKER_IMAGE: 539042943576.dkr.ecr.us-west-2.amazonaws.com/turcotravelbackend:latest
+        DOCKER_IMAGE: 539042943576.dkr.ecr.us-west-2.amazonaws.com/turcotravel-admin-panel:latest
       run: |      
         aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 539042943576.dkr.ecr.us-west-2.amazonaws.com
         docker build -t $DOCKER_IMAGE .
@@ -37,7 +37,7 @@ jobs:
         SERVER_USER: root
         SERVER_PASSWORD: 6pWrr3hJ6G7c
         SERVER_IP: 213.159.30.205
-        DOCKER_IMAGE: 539042943576.dkr.ecr.us-west-2.amazonaws.com/turcotravelbackend:latest
+        DOCKER_IMAGE: 539042943576.dkr.ecr.us-west-2.amazonaws.com/turcotravel-admin-panel:latest
       run: |
         sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP << EOF
           export PATH=$PATH:/usr/local/bin:/usr/bin:/bin
