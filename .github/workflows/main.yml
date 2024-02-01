@@ -39,7 +39,7 @@ jobs:
         SERVER_IP: 213.159.30.205
         DOCKER_IMAGE: 539042943576.dkr.ecr.us-west-2.amazonaws.com/turcotravel-admin-panel:latest
       run: |
-        sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP << EOF
+        sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no -p 23422 $SERVER_USER@$SERVER_IP << EOF
           export PATH=$PATH:/usr/local/bin:/usr/bin:/bin
           aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 539042943576.dkr.ecr.us-west-2.amazonaws.com
           $(aws ecr get-login --no-include-email --region $AWS_REGION)
