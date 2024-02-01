@@ -1,0 +1,55 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+        
+    - name: Build and Push Docker Image to Amazon ECR
+      env:
+        AWS_DEFAULT_REGION: us-west-2
+        DOCKER_IMAGE: 539042943576.dkr.ecr.us-west-2.amazonaws.com/turcotravelbackend:latest
+      run: |      
+        aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 539042943576.dkr.ecr.us-west-2.amazonaws.com
+        docker build -t $DOCKER_IMAGE .
+        docker push $DOCKER_IMAGE
+        
+    - name: SSH into Server and Deploy
+      env:
+        AWS_DEFAULT_REGION: us-west-2
+        AWS_REGION: us-west-2
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
+        SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+        DOCKER_IMAGE: 539042943576.dkr.ecr.us-west-2.amazonaws.com/turcotravelbackend:latest
+      run: |
+        sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP << EOF
+          export PATH=$PATH:/usr/local/bin:/usr/bin:/bin
+          $(aws ecr get-login --no-include-email --region $AWS_REGION)
+          
+          if docker ps -a --format '{{.Names}}' | grep -Eq '^admin-panel$'; then            
+            docker stop admin-panel
+            docker rm admin-panel      
+          fi
+          if docker images -q $DOCKER_IMAGE; then
+            docker rmi $DOCKER_IMAGE
+          fi
+          docker pull $DOCKER_IMAGE
+          docker run -d -p 3000:3000 --name admin-panel $DOCKER_IMAGE         
+        EOF
