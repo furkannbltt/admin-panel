@@ -15,8 +15,8 @@ jobs:
     - name: Set up AWS CLI
       uses: aws-actions/configure-aws-credentials@v3
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-access-key-id: AKIAX3ALWSJMFKDNHCB5
+        aws-secret-access-key: 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
         aws-region: us-west-2
         
     - name: Build and Push Docker Image to Amazon ECR
@@ -32,15 +32,16 @@ jobs:
       env:
         AWS_DEFAULT_REGION: us-west-2
         AWS_REGION: us-west-2
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        SERVER_USER: ${{ secrets.SERVER_USER }}
-        SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
-        SERVER_IP: ${{ secrets.SERVER_IP }}
+        AWS_ACCESS_KEY_ID: AKIAX3ALWSJMFKDNHCB5
+        AWS_SECRET_ACCESS_KEY: 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
+        SERVER_USER: root
+        SERVER_PASSWORD: 6pWrr3hJ6G7c
+        SERVER_IP: 213.159.30.205
         DOCKER_IMAGE: 539042943576.dkr.ecr.us-west-2.amazonaws.com/turcotravelbackend:latest
       run: |
         sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP << EOF
           export PATH=$PATH:/usr/local/bin:/usr/bin:/bin
+          aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 539042943576.dkr.ecr.us-west-2.amazonaws.com
           $(aws ecr get-login --no-include-email --region $AWS_REGION)
           
           if docker ps -a --format '{{.Names}}' | grep -Eq '^admin-panel$'; then            
