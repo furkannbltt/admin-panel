@@ -7,6 +7,7 @@ import {
   faClipboard,
   faHotel,
   faPlane,
+  faSitemap,
   faUsers,
   faUsersBetweenLines,
 } from "@fortawesome/free-solid-svg-icons";
@@ -142,11 +143,28 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
       "user",
       PermissonsType.Users
     ),
+    getItem(
+      <Link to="/site-settings">
+        <div className="side-menu-item">
+          <FontAwesomeIcon icon={faSitemap} />
+          {
+            <span className={`label ${!collapsed ? "collapsed" : ""}`}>
+              Site Ayarları
+            </span>
+          }
+        </div>
+      </Link>,
+      "site-settings",
+      PermissonsType.Free
+    ),
   ];
   const { openKeys, selectedKey } = usePathsForMenuKeys(items, pathname);
 
   const filteredItems = items.filter((item) =>
-    userClaimList.some((claim: ClaimModel) => claim.name === item.claimKey)
+    userClaimList.some(
+      (claim: ClaimModel) =>
+        claim.name === item.claimKey || item.claimKey === PermissonsType.Free
+    )
   );
   return (
     <div className="side-bar-wrapper">

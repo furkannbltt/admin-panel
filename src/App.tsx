@@ -19,6 +19,7 @@ import RegisterPage from "./pages/auth/registerPage";
 import ActivityPage from "./pages/activity";
 import NotPage from "./pages/resultPages/NotPage";
 import ErrorPage from "./pages/resultPages/ErrorPage";
+import SiteSettingsPage from "./pages/siteSettings";
 
 const App: React.FC = () => {
   return (
@@ -108,6 +109,15 @@ const App: React.FC = () => {
                 permissions={[PermissonsType.Group, PermissonsType.Admin]}
               >
                 <GroupsPage />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/site-settings"
+            element={
+              <PrivateRoute>
+                <SiteSettingsPage />
               </PrivateRoute>
             }
           />
