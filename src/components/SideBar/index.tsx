@@ -171,7 +171,7 @@ const Sidebar: React.FC<SideBarProps> = ({ collapsed }) => {
       {collapsed ? (
         <img className="logo" src="/biglogo.png" alt="turcotravel" />
       ) : (
-        <img className="logo" src="/logo.png" alt="turcotravel" />
+        <img className="logo" src="/LOGO.png" alt="turcotravel" />
       )}
       <Menu
         theme="dark"
