@@ -30,7 +30,7 @@ const SiteSettingsPage: React.FC = () => {
     return [
       {
         uid: "image",
-        name: "inage",
+        name: "image",
         status: "done",
         url: `${process.env.REACT_APP_CDN_URL}${image}`,
       },
@@ -61,7 +61,7 @@ const SiteSettingsPage: React.FC = () => {
 
       const payload = {
         ...values,
-        image: file && (file[0] as any),
+        image: file.length && (file[0] as any),
       };
 
       await updateSettings(payload);
